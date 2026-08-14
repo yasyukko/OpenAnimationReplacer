@@ -41,14 +41,14 @@ namespace UI
 				if (const auto consoleRefr = Utils::GetConsoleRefr()) {
 					ImGui::BeginDisabled();
 					std::string formID = std::format("{:08X}", consoleRefr->GetFormID());
-					ImGui::InputText("Evaluate for reference", formID.data(), ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase);
+					ImGui::InputText("Referans için değerlendir", formID.data(), ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase);
 					ImGui::EndDisabled();
 				} else {
-					ImGui::InputTextWithHint("Evaluate for reference", "FormID...", formIDBuf, IM_ARRAYSIZE(formIDBuf), ImGuiInputTextFlags_CallbackEdit | ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase, &ReferenceInputTextCallback);
+					ImGui::InputTextWithHint("Referans için değerlendir", "FormID...", formIDBuf, IM_ARRAYSIZE(formIDBuf), ImGuiInputTextFlags_CallbackEdit | ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase, &ReferenceInputTextCallback);
 				}
 
 				ImGui::SameLine();
-				UICommon::HelpMarker("Select a reference in the game's console, or type the FormID of a reference to color animations and conditions based on their current result for that reference. No need to type the leading zeros. (The player's FormID is 14).");
+				UICommon::HelpMarker("Animasyonları ve koşulları bu referansa ait mevcut sonuçlarına göre renklendirmek için oyun konsolunda bir referans seçin veya referansın FormID değerini girin. Baştaki sıfırları yazmanıza gerek yoktur. (Oyuncunun FormID değeri 14'tür).");
 
 				if (const auto refr = UIManager::GetSingleton().GetRefrToEvaluate()) {
 					ImGui::TableSetColumnIndex(1);
@@ -65,11 +65,11 @@ namespace UI
 			const float bottomBarHeight = ImGui::GetTextLineHeight() + style.FramePadding.y * 4 + style.ItemSpacing.y * 4;
 			if (ImGui::BeginChild("Tabs", ImVec2(0.f, -bottomBarHeight), true)) {
 				if (ImGui::BeginTabBar("TabBar")) {
-					if (ImGui::BeginTabItem("Replacer Mods")) {
+					if (ImGui::BeginTabItem("Değiştirici Modlar")) {
 						DrawReplacerMods();
 						ImGui::EndTabItem();
 					}
-					if (ImGui::BeginTabItem("Replacement Animations")) {
+					if (ImGui::BeginTabItem("Yedek Animasyonlar")) {
 						DrawReplacementAnimations();
 						ImGui::EndTabItem();
 					}
@@ -98,14 +98,14 @@ namespace UI
 
 					ImGui::SetNextItemWidth(avail);
 
-					if (ImGui::InputTextWithHint("##comment", "Add comment...", &_commentState.buffer, ImGuiInputTextFlags_EnterReturnsTrue)) {
+					if (ImGui::InputTextWithHint("##comment", "Yorum ekle...", &_commentState.buffer, ImGuiInputTextFlags_EnterReturnsTrue)) {
 						if (bEdited) {
 							_commentState.Save();
 							ImGui::CloseCurrentPopup();
 						}
 					}
 
-					if (ImGui::Button("Cancel", ImVec2(buttonWidth, 0.f))) {
+					if (ImGui::Button("İptal", ImVec2(buttonWidth, 0.f))) {
 						_commentState.Clear();
 						ImGui::CloseCurrentPopup();
 					}
@@ -113,7 +113,7 @@ namespace UI
 					ImGui::SameLine();
 
 					ImGui::BeginDisabled(!bEdited);
-					if (ImGui::Button("Save", ImVec2(buttonWidth, 0.f))) {
+					if (ImGui::Button("Kaydet", ImVec2(buttonWidth, 0.f))) {
 						_commentState.Save();
 						ImGui::CloseCurrentPopup();
 					}
@@ -123,13 +123,13 @@ namespace UI
 				}
 			}
 
-			const std::string animationLogButtonName = "Animation Log";
+			const std::string animationLogButtonName = "Animasyon Günlüğü";
 			const float animationLogButtonWidth = (ImGui::CalcTextSize(animationLogButtonName.data()).x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 
-			const std::string animationEventLogButtonName = "Event Log";
+			const std::string animationEventLogButtonName = "Olay Günlüğü";
 			const float animationEventLogButtonWidth = (ImGui::CalcTextSize(animationEventLogButtonName.data()).x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 
-			const std::string settingsButtonName = _bShowSettings ? "Settings <" : "Settings >";
+			const std::string settingsButtonName = _bShowSettings ? "Ayarlar <" : "Ayarlar >";
 			const float settingsButtonWidth = (ImGui::CalcTextSize(settingsButtonName.data()).x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 
 			// Bottom bar
@@ -198,7 +198,7 @@ namespace UI
 							bool bShouldDrawSeparator = false;
 							if (problems.IsOutdated()) {
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("ERROR: At least one replacer mod has conditions that require a newer version of Open Animation Replacer.\nThe mod will not function correctly. Please update Open Animation Replacer!");
+								ImGui::TextWrapped("HATA: En az bir değiştirici mod, Open Animation Replacer'ın daha yeni bir sürümünü gerektiren koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen Open Animation Replacer'ı güncelleyin!");
 								ImGui::PopStyleColor();
 
 								bShouldDrawSeparator = true;
@@ -213,7 +213,7 @@ namespace UI
 									ImGui::Spacing();
 								}
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("ERROR: At least one replacer mod has conditions that aren't included in Open Animation Replacer itself, but are added by an Open Animation Replacer API plugin that is either not installed or outdated.\nThe mod will not function correctly. Please download or update the required plugin!");
+								ImGui::TextWrapped("HATA: En az bir değiştirici mod, Open Animation Replacer'ın kendisinde bulunmayan, eksik veya eski bir Open Animation Replacer API eklentisi tarafından eklenen koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen gerekli eklentiyi indirin veya güncelleyin!");
 								ImGui::PopStyleColor();
 								ImGui::Spacing();
 								DrawMissingPlugins();
@@ -230,7 +230,7 @@ namespace UI
 									ImGui::Spacing();
 								}
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("ERROR: At least one replacer mod has conditions that aren't included in Open Animation Replacer itself, but are added by an Open Animation Replacer API plugin that seems to have failed to initialize properly.\nThe mod will not function correctly. Please make sure you have installed the required plugin and all its dependencies correctly!");
+								ImGui::TextWrapped("HATA: En az bir değiştirici mod, Open Animation Replacer'ın kendisinde bulunmayan ancak düzgün başlatılamamış gibi görünen bir Open Animation Replacer API eklentisi tarafından eklenen koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen gerekli eklentiyi ve tüm bağımlılıklarını doğru şekilde yüklediğinizden emin olun!");
 								ImGui::PopStyleColor();
 								ImGui::Spacing();
 								DrawInvalidPlugins();
@@ -247,7 +247,7 @@ namespace UI
 									ImGui::Spacing();
 								}
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("ERROR: At least one replacer mod has conditions that are invalid.\nThe mod will not function correctly. Please check the conditions of the replacer mod, and check whether there's an update available!");
+								ImGui::TextWrapped("HATA: En az bir değiştirici mod geçersiz koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen değiştirici modun koşullarını kontrol edin ve yayınlanmış bir güncelleme olup olmadığına bakın!");
 								ImGui::PopStyleColor();
 								ImGui::Spacing();
 								DrawReplacerModsWithInvalidConditions();
@@ -264,7 +264,7 @@ namespace UI
 									ImGui::Spacing();
 								}
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("ERROR: At least one submod has conditions that are invalid.\nThe mod will not function correctly. Please check the conditions of the replacer mod, and check whether there's an update available!");
+								ImGui::TextWrapped("HATA: En az bir alt mod geçersiz koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen değiştirici modun koşullarını kontrol edin ve yayınlanmış bir güncelleme olup olmadığına bakın!");
 								ImGui::PopStyleColor();
 								ImGui::Spacing();
 								DrawSubModsWithInvalidConditions();
@@ -281,7 +281,7 @@ namespace UI
 									ImGui::Spacing();
 								}
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::WARNING_TEXT_COLOR);
-								ImGui::TextWrapped("WARNING: The following mods have conflicting priorities.\nThis might cause unexpected behavior if they replace the same animations.");
+								ImGui::TextWrapped("UYARI: Aşağıdaki modlar çakışan önceliklere sahip.\nAynı animasyonları değiştiriyorlarsa bu durum beklenmeyen davranışlara yol açabilir.");
 								ImGui::PopStyleColor();
 								ImGui::Spacing();
 								DrawConflictingSubMods();
@@ -294,7 +294,7 @@ namespace UI
 						constexpr float buttonWidth = 120.f;
 						ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonWidth) * 0.5f);
 						ImGui::SetItemDefaultFocus();
-						if (ImGui::Button("OK", ImVec2(buttonWidth, 0))) {
+						if (ImGui::Button("Tamam", ImVec2(buttonWidth, 0))) {
 							ImGui::CloseCurrentPopup();
 						}
 						ImGui::EndPopup();
@@ -359,30 +359,30 @@ namespace UI
 		if (ImGui::Begin("Settings", &_bShowSettings, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings)) {
 			// UI settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("UI Settings");
+			ImGui::TextUnformatted("Arayüz Ayarları");
 			ImGui::Spacing();
 
-			if (UICommon::InputKey("Menu key", Settings::uToggleUIKeyData)) {
+			if (UICommon::InputKey("Menü tuşu", Settings::uToggleUIKeyData)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set the key to toggle the UI.");
+			UICommon::HelpMarker("Arayüzü açıp kapatacak tuşu belirleyin.");
 
 			ImGui::Spacing();
 
-			if (ImGui::Checkbox("Show welcome banner", &Settings::bShowWelcomeBanner)) {
+			if (ImGui::Checkbox("Karşılama başlığını göster", &Settings::bShowWelcomeBanner)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to show the welcome banner on startup.");
+			UICommon::HelpMarker("Başlangıçta karşılama başlığının gösterilmesini etkinleştirir.");
 
 			static float tempScale = Settings::fUIScale;
-			ImGui::SliderFloat("UI scale", &tempScale, 0.5f, 2.f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
+			ImGui::SliderFloat("Arayüz ölçeği", &tempScale, 0.5f, 2.f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set the UI scale.");
+			UICommon::HelpMarker("Arayüz ölçeğini ayarlar.");
 			ImGui::SameLine();
 			ImGui::BeginDisabled(tempScale == Settings::fUIScale);
-			if (ImGui::Button("Apply##UIScale")) {
+if (ImGui::Button("Uygula##UIScale")) {
 				Settings::fUIScale = tempScale;
 				Settings::WriteSettings();
 			}
@@ -393,209 +393,209 @@ namespace UI
 
 			// General settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("General Settings");
+			ImGui::TextUnformatted("Genel Ayarlar");
 			ImGui::Spacing();
 
 			constexpr uint16_t animLimitMin = 0x4000;
 			const uint16_t animLimitMax = Settings::GetMaxAnimLimit();
-			if (ImGui::SliderScalar("Animation limit", ImGuiDataType_U16, &Settings::uAnimationLimit, &animLimitMin, &animLimitMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderScalar("Animasyon sınırı", ImGuiDataType_U16, &Settings::uAnimationLimit, &animLimitMin, &animLimitMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set the animation limit per behavior project. The game will crash if you set this too high without increasing the heap size. The game is incapable of playing animations past the upper limit set here, there's no point trying to circumvent it through the .ini file.");
+			UICommon::HelpMarker("Davranış projesi (behavior project) başına animasyon sınırını belirleyin. Yığın boyutunu (heap size) artırmadan bu değeri çok yüksek ayarlarsanız oyun çökecektir. Oyun, burada belirlenen üst sınırın ötesindeki animasyonları oynatamaz; .ini dosyası üzerinden bunu aşmaya çalışmanın bir anlamı yoktur.");
 
 			constexpr uint32_t heapMin = 0x20000000;
 			constexpr uint32_t heapMax = 0x7FC00000;
-			if (ImGui::SliderScalar("Havok heap size", ImGuiDataType_U32, &Settings::uHavokHeapSize, &heapMin, &heapMax, "0x%X", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderScalar("Havok yığın boyutu (heap size)", ImGuiDataType_U32, &Settings::uHavokHeapSize, &heapMin, &heapMax, "0x%X", ImGuiSliderFlags_AlwaysClamp)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set the havok heap size. Takes effect after restarting the game. (Vanilla value is 0x20000000)");
+			UICommon::HelpMarker("Havok yığın boyutunu belirleyin. Oyun yeniden başlatıldıktan sonra etkili olur. (Orijinal/Vanilla değer: 0x20000000)");
 
 			if (Settings::bDisablePreloading) {
 				ImGui::BeginDisabled();
 				bool bDummy = false;
-				ImGui::Checkbox("Load default behaviors in main menu", &bDummy);
+				ImGui::Checkbox("Varsayılan davranışları ana menüde yükle", &bDummy);
 				ImGui::EndDisabled();
 			} else {
-				if (ImGui::Checkbox("Load default behaviors in main menu", &Settings::bLoadDefaultBehaviorsInMainMenu)) {
+				if (ImGui::Checkbox("Varsayılan davranışları ana menüde yükle", &Settings::bLoadDefaultBehaviorsInMainMenu)) {
 					Settings::WriteSettings();
 				}
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to start loading default male/female behaviors in the main menu. Ignored with animation preloading disabled as there's no benefit in doing so in that case.");
+			UICommon::HelpMarker("Ana menüdeyken varsayılan erkek/kadın davranışlarını yüklemeye başlamak için etkinleştirin. Animasyon ön yüklemesi devre dışı bırakıldığında bir faydası olmadığı için yok sayılır.");
 
 			constexpr uint32_t workerCountMin = 1;
 			constexpr uint32_t workerCountMax = 32;
-			if (ImGui::SliderScalar("Parsing worker count", ImGuiDataType_U32, &Settings::uParsingWorkerCount, &workerCountMin, &workerCountMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderScalar("Ayrıştırma iş parçacığı sayısı", ImGuiDataType_U32, &Settings::uParsingWorkerCount, &workerCountMin, &workerCountMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Number of worker threads used while parsing animation replacer mods on launch. Higher values can be slower due to storage contention. Takes effect after restarting the game.");
+			UICommon::HelpMarker("Açılışta animasyon değiştirici modlar ayrıştırılırken kullanılacak iş parçacığı sayısı. Yüksek değerler, depolama çakışması (storage contention) nedeniyle daha yavaş olabilir. Oyun yeniden başlatıldıktan sonra etkili olur.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Duplicate filtering settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Duplicate Filtering Settings");
+			ImGui::TextUnformatted("Mükerrer Filtreleme Ayarları");
 			ImGui::Spacing();
 
-			if (ImGui::Checkbox("Filter out duplicate animations", &Settings::bFilterOutDuplicateAnimations)) {
+			if (ImGui::Checkbox("Mükerrer animasyonları filtrele", &Settings::bFilterOutDuplicateAnimations)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to check for duplicates before adding an animation. Only one copy of an animation binding will be used in multiple replacer animations. This might massively cut down on the number of loaded animations as replacer mods tend to use multiple copies of the same animation with different condition.");
+			UICommon::HelpMarker("Bir animasyon eklemeden önce mükerrer olup olmadığını kontrol etmek için etkinleştirin. Birden fazla değiştirici animasyonda bir animasyon bağlamasının yalnızca bir kopyası kullanılır. Değiştirici modlar aynı animasyonun farklı koşullara sahip birden fazla kopyasını kullanma eğiliminde olduğundan, bu işlem yüklenen animasyon sayısını ciddi oranda azaltabilir.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Animation queue progress bar settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Animation Queue Progress Bar Settings");
+			ImGui::TextUnformatted("Animasyon Kuyruğu İlerleme Çubuğu Ayarları");
 			ImGui::Spacing();
 
-			if (ImGui::Checkbox("Enable", &Settings::bEnableAnimationQueueProgressBar)) {
+			if (ImGui::Checkbox("Etkinleştir", &Settings::bEnableAnimationQueueProgressBar)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to show a progress bar while animations are loading.");
+			UICommon::HelpMarker("Animasyonlar yüklenirken bir ilerleme çubuğu gösterilmesini sağlar.");
 
-			if (ImGui::SliderFloat("Linger time", &Settings::fAnimationQueueLingerTime, 0.f, 10.f, "%.1f s", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderFloat("Ekranda kalma süresi", &Settings::fAnimationQueueLingerTime, 0.f, 10.f, "%.1f s", ImGuiSliderFlags_AlwaysClamp)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Duration the bar will remain on screen after all animations have been loaded.");
+			UICommon::HelpMarker("Tüm animasyonlar yüklendikten sonra çubuğun ekranda kalacağı süre.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Animation log settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Animation Log Settings");
+			ImGui::TextUnformatted("Animasyon Günlüğü Ayarları");
 			ImGui::Spacing();
 
-			if (ImGui::SliderFloat("Log width", &Settings::fAnimationLogWidth, 300.f, 1500.f, "%.0f", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderFloat("Günlük genişliği", &Settings::fAnimationLogWidth, 300.f, 1500.f, "%.0f", ImGuiSliderFlags_AlwaysClamp)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Width of the animation log window.");
+			UICommon::HelpMarker("Animasyon günlüğü penceresinin genişliği.");
 
 			constexpr uint32_t entriesMin = 1;
 			constexpr uint32_t entriesMax = 20;
-			if (ImGui::SliderScalar("Max entries", ImGuiDataType_U32, &Settings::uAnimationLogMaxEntries, &entriesMin, &entriesMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+			if (ImGui::SliderScalar("Maksimum girdi sayısı", ImGuiDataType_U32, &Settings::uAnimationLogMaxEntries, &entriesMin, &entriesMax, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 				AnimationLog::GetSingleton().ClampLog();
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set the maximum number of entries in the animation log.");
+			UICommon::HelpMarker("Animasyon günlüğündeki maksimum girdi sayısını belirleyin.");
 
-			const char* logTypes[] = { "When replaced", "With potential replacements", "All" };
-			if (ImGui::SliderInt("Activate log mode", reinterpret_cast<int*>(&Settings::uAnimationActivateLogMode), 0, 2, logTypes[Settings::uAnimationActivateLogMode])) {
+			const char* logTypes[] = { "Değiştirildiğinde", "Olası değişikliklerle", "Tümü" };
+			if (ImGui::SliderInt("Aktivasyon günlük modu", reinterpret_cast<int*>(&Settings::uAnimationActivateLogMode), 0, 2, logTypes[Settings::uAnimationActivateLogMode])) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set conditions in which animation clip activation should be logged.");
+			UICommon::HelpMarker("Animasyon klibi aktivasyonunun günlüğe kaydedileceği koşulları belirleyin.");
 
-			if (ImGui::SliderInt("Echo log mode", reinterpret_cast<int*>(&Settings::uAnimationEchoLogMode), 0, 2, logTypes[Settings::uAnimationEchoLogMode])) {
+			if (ImGui::SliderInt("Yankı (Echo) günlük modu", reinterpret_cast<int*>(&Settings::uAnimationEchoLogMode), 0, 2, logTypes[Settings::uAnimationEchoLogMode])) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set conditions in which animation clip echo should be logged. (Echo is when an animation clip transitions into itself. Happens with some non-looping clips)");
+			UICommon::HelpMarker("Animasyon klibi yankısının (Echo) günlüğe kaydedileceği koşulları belirleyin. (Yankı, bir animasyon klibinin kendi kendine geçiş yapmasıdır. Döngüsel olmayan bazı kliplerde gerçekleşir)");
 
-			if (ImGui::SliderInt("Loop log mode", reinterpret_cast<int*>(&Settings::uAnimationLoopLogMode), 0, 2, logTypes[Settings::uAnimationLoopLogMode])) {
+			if (ImGui::SliderInt("Döngü (Loop) günlük modu", reinterpret_cast<int*>(&Settings::uAnimationLoopLogMode), 0, 2, logTypes[Settings::uAnimationLoopLogMode])) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set conditions in which animation clip looping should be logged.");
+			UICommon::HelpMarker("Animasyon klibi döngüsünün günlüğe kaydedileceği koşulları belirleyin.");
 
-			if (ImGui::Checkbox("Only log current project", &Settings::bAnimationLogOnlyActiveGraph)) {
+			if (ImGui::Checkbox("Yalnızca mevcut projeyi kaydet", &Settings::bAnimationLogOnlyActiveGraph)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to only log animation clips from the active behavior graph - filter out first person animations when in third person, etc.");
+			UICommon::HelpMarker("Yalnızca aktif davranış grafiğindeki animasyon kliplerini kaydetmek için etkinleştirin - üçüncü şahıs kamerasındayken birinci şahıs animasyonlarını filtreler, vb.");
 
-			if (ImGui::Checkbox("Write to log file##AnimationLog", &Settings::bAnimationLogWriteToTextLog)) {
+			if (ImGui::Checkbox("Günlük dosyasına yaz##AnimationLog", &Settings::bAnimationLogWriteToTextLog)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to also log the clips into the file at 'Documents\\My Games\\Skyrim Special Edition\\SKSE\\OpenAnimationReplacer.log'.");
+			UICommon::HelpMarker("Klipleri 'Belgelerim\\My Games\\Skyrim Special Edition\\SKSE\\OpenAnimationReplacer.log' konumundaki dosyaya da kaydetmek için etkinleştirin.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Animation event log settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Animation Event Log Settings");
+			ImGui::TextUnformatted("Animasyon Olay Günlüğü Ayarları");
 			ImGui::Spacing();
 
 			float tempSize[2] = { Settings::fAnimationEventLogWidth, Settings::fAnimationEventLogHeight };
-			if (ImGui::SliderFloat2("Event Log Size", tempSize, 300.f, 1500.f, "%.0f")) {
+			if (ImGui::SliderFloat2("Olay Günlüğü Boyutu", tempSize, 300.f, 1500.f, "%.0f")) {
 				Settings::fAnimationEventLogWidth = tempSize[0];
 				Settings::fAnimationEventLogHeight = tempSize[1];
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Width and height of the animation event log.");
+			UICommon::HelpMarker("Animasyon olay günlüğünün genişliği ve yüksekliği.");
 
-			if (ImGui::Checkbox("Write to log file##EventLog", &Settings::bAnimationEventLogWriteToTextLog)) {
+			if (ImGui::Checkbox("Günlük dosyasına yaz##EventLog", &Settings::bAnimationEventLogWriteToTextLog)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to also log animation events into the file at 'Documents\\My Games\\Skyrim Special Edition\\SKSE\\OpenAnimationReplacer.log'.");
+			UICommon::HelpMarker("Animasyon olaylarını 'Belgelerim\\My Games\\Skyrim Special Edition\\SKSE\\OpenAnimationReplacer.log' konumundaki dosyaya da kaydetmek için etkinleştirin.");
 
 			ImGui::Spacing();
 
 			float tempOffset[2] = { Settings::fAnimationLogsOffsetX, Settings::fAnimationLogsOffsetY };
-			if (ImGui::SliderFloat2("Log Offset", tempOffset, 0.f, 500.f, "%.0f")) {
+			if (ImGui::SliderFloat2("Günlük Konum Kaydırma (Offset)", tempOffset, 0.f, 500.f, "%.0f")) {
 				Settings::fAnimationLogsOffsetX = tempOffset[0];
 				Settings::fAnimationLogsOffsetY = tempOffset[1];
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Position offset from the corner of the screen used by the logs.");
+			UICommon::HelpMarker("Günlüklerin ekran köşesinden olan konum uzaklığı.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Workarounds
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Workarounds");
+			ImGui::TextUnformatted("Geçici Çözümler (Workarounds)");
 			ImGui::SameLine();
-			UICommon::HelpMarker("These settings are workarounds for some issues with Legacy replacer mods.");
+			UICommon::HelpMarker("Bu ayarlar, bazı eski (Legacy) değiştirici modlardaki sorunlar için geçici çözümlerdir.");
 			ImGui::Spacing();
 
-			if (ImGui::Checkbox("Don't reset on loop the state data of Random conditions by default in Legacy mods", &Settings::bLegacyKeepRandomResultsByDefault)) {
+			if (ImGui::Checkbox("Eski (Legacy) modlarda Rastgele (Random) koşullarının durum verilerini döngüde varsayılan olarak sıfırlama", &Settings::bLegacyKeepRandomResultsByDefault)) {
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set to disable the setting \"Should reset on loop/echo\" by default in Random conditions for Legacy replacer mods. This will make them behave as previously expected. Changing this setting takes effect after restarting the game.");
+			UICommon::HelpMarker("Eski değiştirici modlar için Rastgele (Random) koşullarındaki \"Döngüde/yankıda sıfırlanmalı\" ayarını varsayılan olarak devre dışı bırakır. Bu, modların önceden beklendiği gibi davranmasını sağlar. Bu ayarın değiştirilmesi, oyun yeniden başlatıldıktan sonra etkili olur.");
 
 			ImGui::Spacing();
 			ImGui::Separator();
 
 			// Experimental settings
 			ImGui::AlignTextToFramePadding();
-			ImGui::TextUnformatted("Experimental Settings");
+			ImGui::TextUnformatted("Deneysel Ayarlar");
 			ImGui::SameLine();
-			UICommon::HelpMarker("These settings are considered experimental and might not work correctly for you. They take effect after restarting the game.");
+			UICommon::HelpMarker("Bu ayarlar deneysel olarak kabul edilir ve sizde düzgün çalışmayabilir. Oyun yeniden başlatıldıktan sonra etkili olurlar.");
 			ImGui::Spacing();
 
-			if (ImGui::Checkbox("Disable preloading", &Settings::bDisablePreloading)) {
+			if (ImGui::Checkbox("Ön yüklemeyi devre dışı bırak", &Settings::bDisablePreloading)) {
 				if (Settings::bDisablePreloading) {
 					Settings::bLoadDefaultBehaviorsInMainMenu = false;
 				}
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Set to disable preloading all animations when the behavior is first loaded. This is not recommended, and the setting has been proven to cause some differences in animation behavior.");
+			UICommon::HelpMarker("Davranış ilk kez yüklendiğinde tüm animasyonların önceden yüklenmesini devre dışı bırakır. Bu önerilmez ve bu ayarın animasyon davranışlarında bazı farklılıklara yol açtığı kanıtlanmıştır.");
 
-			if (ImGui::Checkbox("Increase animation limit", &Settings::bIncreaseAnimationLimit)) {
+			if (ImGui::Checkbox("Animasyon sınırını artır", &Settings::bIncreaseAnimationLimit)) {
 				Settings::ClampAnimLimit();
 				Settings::WriteSettings();
 			}
 			ImGui::SameLine();
-			UICommon::HelpMarker("Enable to increase the animation limit to double the default value. Should generally work fine, but I might have missed some places to patch in the game code so this is still considered to be experimental. There's no benefit in enabling this if you're not going over the limit.");
+			UICommon::HelpMarker("Animasyon sınırını varsayılan değerin iki katına çıkarmak için etkinleştirin. Genellikle sorunsuz çalışmalıdır, ancak oyun kodunda yamalanması gereken bazı yerleri gözden kaçırmış olabileceğim için bu hala deneysel kabul edilmektedir. Sınırı aşmıyorsanız bunu etkinleştirmenin bir faydası yoktur.");
 		}
 
 		ImGui::End();
@@ -604,9 +604,9 @@ namespace UI
 	void UIMain::DrawMissingPlugins()
 	{
 		if (ImGui::BeginTable("MissingPlugins", 3, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
-			ImGui::TableSetupColumn("Plugin", ImGuiTableColumnFlags_WidthStretch);
-			ImGui::TableSetupColumn("Min required", ImGuiTableColumnFlags_WidthFixed, 100.f);
-			ImGui::TableSetupColumn("Current", ImGuiTableColumnFlags_WidthFixed, 100.f);
+			ImGui::TableSetupColumn("Eklenti", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Min. Gerekli", ImGuiTableColumnFlags_WidthFixed, 100.f);
+			ImGui::TableSetupColumn("Mevcut", ImGuiTableColumnFlags_WidthFixed, 100.f);
 			ImGui::TableSetupScrollFreeze(0, 1);
 			ImGui::TableHeadersRow();
 
@@ -626,7 +626,7 @@ namespace UI
 				if (currentPluginVersion > 0) {
 					ImGui::TextUnformatted(currentPluginVersion.string("."sv).data());
 				} else {
-					ImGui::TextUnformatted("Missing");
+					ImGui::TextUnformatted("Eksik");
 				}
 			});
 
@@ -637,9 +637,9 @@ namespace UI
 	void UIMain::DrawInvalidPlugins()
 	{
 		if (ImGui::BeginTable("InvalidPlugins", 3, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
-			ImGui::TableSetupColumn("Plugin", ImGuiTableColumnFlags_WidthStretch);
-			ImGui::TableSetupColumn("Min required", ImGuiTableColumnFlags_WidthFixed, 100.f);
-			ImGui::TableSetupColumn("Current", ImGuiTableColumnFlags_WidthFixed, 100.f);
+			ImGui::TableSetupColumn("Eklenti", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Min. Gerekli", ImGuiTableColumnFlags_WidthFixed, 100.f);
+			ImGui::TableSetupColumn("Mevcut", ImGuiTableColumnFlags_WidthFixed, 100.f);
 			ImGui::TableSetupScrollFreeze(0, 1);
 			ImGui::TableHeadersRow();
 
@@ -659,7 +659,7 @@ namespace UI
 				if (currentPluginVersion > 0) {
 					ImGui::TextUnformatted(currentPluginVersion.string("."sv).data());
 				} else {
-					ImGui::TextUnformatted("Missing");
+					ImGui::TextUnformatted("Eksik");
 				}
 			});
 
@@ -670,8 +670,8 @@ namespace UI
 	void UIMain::DrawConflictingSubMods() const
 	{
 		if (ImGui::BeginTable("ConflictingSubMods", 2, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
-			ImGui::TableSetupColumn("Submod", ImGuiTableColumnFlags_WidthStretch);
-			ImGui::TableSetupColumn("Priority", ImGuiTableColumnFlags_WidthFixed, 100.f);
+			ImGui::TableSetupColumn("Alt Mod", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Öncelik", ImGuiTableColumnFlags_WidthFixed, 100.f);
 			ImGui::TableSetupScrollFreeze(0, 1);
 			ImGui::TableHeadersRow();
 
@@ -714,7 +714,7 @@ namespace UI
 	void UIMain::DrawReplacerModsWithInvalidConditions() const
 	{
 		if (ImGui::BeginTable("ReplacerModsWithInvalidConditions", 1, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
-			ImGui::TableSetupColumn("Replacer mod", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Değiştirici mod", ImGuiTableColumnFlags_WidthStretch);
 			ImGui::TableSetupScrollFreeze(0, 1);
 			ImGui::TableHeadersRow();
 
@@ -730,11 +730,11 @@ namespace UI
 		}
 	}
 
-	void UIMain::DrawSubModsWithInvalidConditions() const
+void UIMain::DrawSubModsWithInvalidConditions() const
 	{
 		if (ImGui::BeginTable("SubModsWithInvalidConditions", 2, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
-			ImGui::TableSetupColumn("Parent mod", ImGuiTableColumnFlags_WidthStretch);
-			ImGui::TableSetupColumn("Submod", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Ana mod", ImGuiTableColumnFlags_WidthStretch);
+			ImGui::TableSetupColumn("Alt mod", ImGuiTableColumnFlags_WidthStretch);
 			ImGui::TableSetupScrollFreeze(0, 1);
 			ImGui::TableHeadersRow();
 
@@ -758,20 +758,20 @@ namespace UI
 	{
 		static char nameFilterBuf[32] = "";
 		ImGui::SetNextItemWidth(ImGui::GetFontSize() * 18);
-		ImGui::InputTextWithHint("Filter", "Mod/submod/author name...", nameFilterBuf, IM_ARRAYSIZE(nameFilterBuf));
+		ImGui::InputTextWithHint("Filtrele", "Mod/alt mod/yazar adı...", nameFilterBuf, IM_ARRAYSIZE(nameFilterBuf));
 		ImGui::SameLine();
-		UICommon::HelpMarker("Type a part of a mod/submod/author name to filter the list.");
+		UICommon::HelpMarker("Listeyi filtrelemek için mod, alt mod veya yazar adının bir kısmını yazın.");
 
-		const float offset = ImGui::CalcTextSize("Inspect Mode").x + ImGui::CalcTextSize("User Mode").x + ImGui::CalcTextSize("Author Mode").x + ImGui::CalcTextSize("(?)").x + 100.f;
+		const float offset = ImGui::CalcTextSize("İnceleme Modu").x + ImGui::CalcTextSize("Kullanıcı Modu").x + ImGui::CalcTextSize("Yazar Modu").x + ImGui::CalcTextSize("(?)").x + 100.f;
 		ImGui::SameLine(ImGui::GetWindowWidth() - offset);
 
-		ImGui::RadioButton("Inspect Mode", reinterpret_cast<int*>(&_editMode), 0);
+		ImGui::RadioButton("İnceleme Modu", reinterpret_cast<int*>(&_editMode), 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("User Mode", reinterpret_cast<int*>(&_editMode), 1);
+		ImGui::RadioButton("Kullanıcı Modu", reinterpret_cast<int*>(&_editMode), 1);
 		ImGui::SameLine();
-		ImGui::RadioButton("Author Mode", reinterpret_cast<int*>(&_editMode), 2);
+		ImGui::RadioButton("Yazar Modu", reinterpret_cast<int*>(&_editMode), 2);
 		ImGui::SameLine();
-		UICommon::HelpMarker("Editing in author mode will edit the original config files contained in the mod folders. User mode creates and saves a new configuration file that will override the original one when the settings are reloaded. That won't affect the original file.");
+		UICommon::HelpMarker("Yazar modunda düzenleme yapmak, mod klasörlerinde bulunan orijinal yapılandırma dosyalarını değiştirir. Kullanıcı modu ise, ayarlar yeniden yüklendiğinde orijinal dosyanın üzerine geçecek yeni bir yapılandırma dosyası oluşturur ve kaydeder. Bu işlem orijinal dosyayı etkilemez.");
 
 		ImGui::Separator();
 
@@ -828,7 +828,7 @@ namespace UI
 
 		if (a_replacerMod->GetConfigSource() == Parsing::ConfigSource::kUser) {
 			ImGui::SameLine();
-			UICommon::TextUnformattedColored(UICommon::USER_MOD_COLOR, "(User)");
+			UICommon::TextUnformattedColored(UICommon::USER_MOD_COLOR, "(Kullanıcı)");
 		}
 
 		// node name
@@ -845,7 +845,7 @@ namespace UI
 				const std::string nameId = "Mod name##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + "name";
 				ImGui::SetNextItemWidth(-150.f);
 				std::string tempName(a_replacerMod->GetName());
-				if (ImGui::InputTextWithHint(nameId.data(), "Mod name", &tempName)) {
+				if (ImGui::InputTextWithHint(nameId.data(), "Mod adı", &tempName)) {
 					a_replacerMod->SetName(tempName);
 					a_replacerMod->SetDirty(true);
 				}
@@ -856,7 +856,7 @@ namespace UI
 			if (!a_replacerMod->IsLegacy() && _editMode == EditMode::kAuthor) {
 				ImGui::SetNextItemWidth(250.f);
 				std::string tempAuthor(a_replacerMod->GetAuthor());
-				if (ImGui::InputTextWithHint(authorId.data(), "Author", &tempAuthor)) {
+				if (ImGui::InputTextWithHint(authorId.data(), "Yazar", &tempAuthor)) {
 					a_replacerMod->SetAuthor(tempAuthor);
 					a_replacerMod->SetDirty(true);
 				}
@@ -864,7 +864,7 @@ namespace UI
 				if (ImGui::BeginTable(authorId.data(), 1, ImGuiTableFlags_BordersOuter)) {
 					ImGui::TableNextRow();
 					ImGui::TableSetColumnIndex(0);
-					UICommon::TextDescriptionRightAligned("Author");
+					UICommon::TextDescriptionRightAligned("Yazar");
 					ImGui::AlignTextToFramePadding();
 					ImGui::TextUnformatted(a_replacerMod->GetAuthor().data());
 					ImGui::EndTable();
@@ -886,7 +886,7 @@ namespace UI
 					ImGui::TableNextRow();
 					ImGui::TableSetColumnIndex(0);
 					ImGui::AlignTextToFramePadding();
-					UICommon::TextDescriptionRightAligned("Description");
+					UICommon::TextDescriptionRightAligned("Açıklama");
 					UICommon::TextUnformattedWrapped(a_replacerMod->GetDescription().data());
 					ImGui::EndTable();
 				}
@@ -895,7 +895,7 @@ namespace UI
 
 			// Condition presets
 			if (_editMode > EditMode::kNone || a_replacerMod->HasConditionPresets()) {
-				const std::string conditionPresetsLabel = "Condition presets##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + "conditionPresets";
+				const std::string conditionPresetsLabel = "Koşul ön ayarları##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + "conditionPresets";
 				ImGuiTreeNodeFlags flags = a_replacerMod->HasConditionPresets() ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None;
 				if (ImGui::CollapsingHeader(conditionPresetsLabel.data(), flags)) {
 					ImGui::AlignTextToFramePadding();
@@ -918,8 +918,8 @@ namespace UI
 
 					if (_editMode > EditMode::kNone) {
 						// Add condition preset button
-						constexpr auto popupName = "Adding new condition preset"sv;
-						if (ImGui::Button("Add new condition preset")) {
+						constexpr auto popupName = "Yeni koşul ön ayarı ekleniyor"sv;
+						if (ImGui::Button("Yeni koşul ön ayarı ekle")) {
 							const auto popupPos = ImGui::GetCursorScreenPos();
 							ImGui::SetNextWindowPos(popupPos);
 							ImGui::OpenPopup(popupName.data());
@@ -927,7 +927,7 @@ namespace UI
 
 						if (ImGui::BeginPopupModal(popupName.data(), nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 							std::string conditionPresetName;
-							if (ImGui::InputTextWithHint("##ConditionPresetName", "Type a unique name...", &conditionPresetName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+							if (ImGui::InputTextWithHint("##ConditionPresetName", "Benzersiz bir isim yazın...", &conditionPresetName, ImGuiInputTextFlags_EnterReturnsTrue)) {
 								if (conditionPresetName.size() > 2 && !a_replacerMod->HasConditionPreset(conditionPresetName)) {
 									auto newConditionPreset = std::make_unique<Conditions::ConditionPreset>(conditionPresetName, ""sv);
 									a_replacerMod->AddConditionPreset(newConditionPreset);
@@ -937,7 +937,7 @@ namespace UI
 							}
 							ImGui::SetItemDefaultFocus();
 							ImGui::SameLine();
-							if (ImGui::Button("Cancel")) {
+							if (ImGui::Button("İptal")) {
 								ImGui::CloseCurrentPopup();
 							}
 							ImGui::EndPopup();
@@ -949,7 +949,7 @@ namespace UI
 			}
 
 			// Submods
-			ImGui::TextUnformatted("Submods:");
+			ImGui::TextUnformatted("Alt modlar:");
 			a_replacerMod->ForEachSubMod([&](SubMod* a_subMod) {
 				// Filter
 				const auto search = a_filterResults.find(a_subMod->GetName().data());
@@ -969,7 +969,7 @@ namespace UI
 					ImGui::BeginDisabled();
 				}
 				ImGui::BeginDisabled(a_replacerMod->HasInvalidConditions(true) || a_replacerMod->HasInvalidFunctions());
-				if (ImGui::Button(_editMode == EditMode::kAuthor ? "Save mod config (Author)" : "Save mod config (User)")) {
+				if (ImGui::Button(_editMode == EditMode::kAuthor ? "Mod yapılandırmasını kaydet (Yazar)" : "Mod yapılandırmasını kaydet (Kullanıcı)")) {
 					a_replacerMod->SaveConfig(_editMode);
 				}
 				ImGui::EndDisabled();
@@ -979,7 +979,7 @@ namespace UI
 
 				// Reload mod config
 				ImGui::SameLine();
-				UICommon::ButtonWithConfirmationModal("Reload mod config", "Are you sure you want to reload the config?\nThis operation cannot be undone!\n\n"sv, [&]() {
+				UICommon::ButtonWithConfirmationModal("Mod yapılandırmasını yeniden yükle", "Yapılandırmayı yeniden yüklemek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReloadReplacerModConfigJob>(a_replacerMod);
 				});
 
@@ -989,7 +989,7 @@ namespace UI
 					ImGui::BeginDisabled();
 				}
 				ImGui::SameLine();
-				UICommon::ButtonWithConfirmationModal("Delete mod user config", "Are you sure you want to delete the user config?\nThis operation cannot be undone!\n\n"sv, [&]() {
+				UICommon::ButtonWithConfirmationModal("Kullanıcı yapılandırmasını sil", "Kullanıcı yapılandırmasını silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 					Utils::DeleteUserConfig(a_replacerMod->GetPath());
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReloadReplacerModConfigJob>(a_replacerMod);
 				});
@@ -1024,7 +1024,7 @@ namespace UI
 				OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::UpdateSubModJob>(a_subMod, true);
 				a_subMod->SetDirty(true);
 			}
-			UICommon::AddTooltip("If unchecked, the submod will be disabled and none of its replacement animations will be considered.");
+			UICommon::AddTooltip("İşaret kaldırılırsa alt mod devre dışı bırakılır ve içerdiği değiştirici animasyonların hiçbiri hesaba katılmaz.");
 			ImGui::PopID();
 		}
 
@@ -1036,15 +1036,15 @@ namespace UI
 		switch (a_subMod->GetConfigSource()) {
 		case Parsing::ConfigSource::kUser:
 			ImGui::SameLine();
-			UICommon::TextUnformattedColored(UICommon::USER_MOD_COLOR, "(User)");
+			UICommon::TextUnformattedColored(UICommon::USER_MOD_COLOR, "(Kullanıcı)");
 			break;
 		case Parsing::ConfigSource::kLegacy:
 			ImGui::SameLine();
-			UICommon::TextUnformattedDisabled("(Legacy)");
+			UICommon::TextUnformattedDisabled("(Eski)");
 			break;
 		case Parsing::ConfigSource::kLegacyActorBase:
 			ImGui::SameLine();
-			UICommon::TextUnformattedDisabled("(Legacy ActorBase)");
+			UICommon::TextUnformattedDisabled("(Eski ActorBase)");
 			break;
 		}
 
@@ -1064,7 +1064,7 @@ namespace UI
 
 		float cursorPosX = ImGui::GetCursorPosX();
 
-		std::string priorityText = "Priority: " + std::to_string(a_subMod->GetPriority());
+		std::string priorityText = "Öncelik: " + std::to_string(a_subMod->GetPriority());
 		UICommon::SecondColumn(_firstColumnWidthPercent);
 		if (ImGui::GetCursorPosX() < cursorPosX) {
 			// make sure we don't draw priority text over the name
@@ -1083,14 +1083,14 @@ namespace UI
 					std::string subModNameId = "Submod name##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "name";
 					ImGui::SetNextItemWidth(-150.f);
 					std::string tempName(a_subMod->GetName());
-					if (ImGui::InputTextWithHint(subModNameId.data(), "Submod name", &tempName)) {
+					if (ImGui::InputTextWithHint(subModNameId.data(), "Alt mod adı", &tempName)) {
 						a_subMod->SetName(tempName);
 						a_subMod->SetDirty(true);
 					}
 				}
 			}
 
-			// Submod description
+// Submod description
 			{
 				std::string subModDescriptionId = "Submod description##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "description";
 				if (_editMode == EditMode::kAuthor) {
@@ -1105,7 +1105,7 @@ namespace UI
 						ImGui::TableNextRow();
 						ImGui::TableSetColumnIndex(0);
 						ImGui::AlignTextToFramePadding();
-						UICommon::TextDescriptionRightAligned("Description");
+						UICommon::TextDescriptionRightAligned("Açıklama");
 						UICommon::TextUnformattedWrapped(a_subMod->GetDescription().data());
 						ImGui::EndTable();
 					}
@@ -1127,7 +1127,7 @@ namespace UI
 						ImGui::TableNextRow();
 						ImGui::TableSetColumnIndex(0);
 						ImGui::AlignTextToFramePadding();
-						UICommon::TextDescriptionRightAligned("Priority");
+						UICommon::TextDescriptionRightAligned("Öncelik");
 						ImGui::TextUnformatted(std::to_string(a_subMod->GetPriority()).data());
 						ImGui::EndTable();
 					}
@@ -1139,11 +1139,11 @@ namespace UI
 			// Submod override animations folder
 			{
 				std::string overrideAnimationsFolderLabel = "Override animations folder##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "overrideAnimationsFolder";
-				std::string overrideAnimationsFolderTooltip = "If set, this submod will load animations from the given folder (in the parent directory) instead of its own folder.";
+				std::string overrideAnimationsFolderTooltip = "Ayarlanırsa, bu alt mod animasyonları kendi klasörü yerine belirtilen klasörden (üst dizindeki) yükler.";
 				if (_editMode != EditMode::kNone) {
 					ImGui::SetNextItemWidth(-220.f);
 					std::string tempOverrideAnimationsFolder(a_subMod->GetOverrideAnimationsFolder());
-					if (ImGui::InputTextWithHint(overrideAnimationsFolderLabel.data(), "Override animations folder", &tempOverrideAnimationsFolder)) {
+					if (ImGui::InputTextWithHint(overrideAnimationsFolderLabel.data(), "Geçersiz kılma animasyon klasörü", &tempOverrideAnimationsFolder)) {
 						a_subMod->SetOverrideAnimationsFolder(tempOverrideAnimationsFolder);
 						a_subMod->SetDirty(true);
 					}
@@ -1154,7 +1154,7 @@ namespace UI
 						ImGui::TableNextRow();
 						ImGui::TableSetColumnIndex(0);
 						ImGui::AlignTextToFramePadding();
-						UICommon::TextDescriptionRightAligned("Override animations folder");
+						UICommon::TextDescriptionRightAligned("Geçersiz kılma animasyon klasörü");
 						ImGui::TextUnformatted(a_subMod->GetOverrideAnimationsFolder().data());
 						ImGui::EndTable();
 					}
@@ -1166,11 +1166,11 @@ namespace UI
 			// Submod required project name
 			{
 				std::string requiredProjectNameId = "Required project name##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "requiredProjectName";
-				std::string requiredProjectNameTooltip = "If set, this submod will only load for the specified project name. Leave empty to load for all projects.";
+				std::string requiredProjectNameTooltip = "Ayarlanırsa, bu alt mod yalnızca belirtilen proje adı için yüklenecektir. Tüm projeler için yüklenmesini istiyorsanız boş bırakın.";
 				if (_editMode != EditMode::kNone) {
 					ImGui::SetNextItemWidth(-220.f);
 					std::string tempRequiredProjectName(a_subMod->GetRequiredProjectName());
-					if (ImGui::InputTextWithHint(requiredProjectNameId.data(), "Required project name", &tempRequiredProjectName)) {
+					if (ImGui::InputTextWithHint(requiredProjectNameId.data(), "Gerekli proje adı", &tempRequiredProjectName)) {
 						a_subMod->SetRequiredProjectName(tempRequiredProjectName);
 						a_subMod->SetDirty(true);
 					}
@@ -1181,7 +1181,7 @@ namespace UI
 						ImGui::TableNextRow();
 						ImGui::TableSetColumnIndex(0);
 						ImGui::AlignTextToFramePadding();
-						UICommon::TextDescriptionRightAligned("Required project name");
+						UICommon::TextDescriptionRightAligned("Gerekli proje adı");
 						ImGui::TextUnformatted(a_subMod->GetRequiredProjectName().data());
 						ImGui::EndTable();
 					}
@@ -1192,8 +1192,8 @@ namespace UI
 
 			// Submod ignore no triggers flag
 			{
-				std::string noTriggersFlagLabel = "Ignore \"Don't Convert Annotations To Triggers\" flag##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "ignoreDontConvertAnnotationsToTriggersFlag";
-				std::string noTriggersFlagTooltip = "If checked, the animation clip flag \"Don't convert annotations to triggers\", set on some animation clips in vanilla, will be ignored. This means that animation triggers (events) that included in the replacer animation file itself as annotations will now run, instead of being ignored.";
+				std::string noTriggersFlagLabel = "\"Açıklamaları Tetikleyicilere Dönüştürme\" bayrağını yok say##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "ignoreDontConvertAnnotationsToTriggersFlag";
+				std::string noTriggersFlagTooltip = "İşaretlenirse, varsayılan oyundaki bazı animasyon klipslerinde ayarlanmış olan \"Açıklamaları tetikleyicilere dönüştürme\" animasyon klip bayrağı yok sayılır. Bu, animasyon dosyasının kendi içinde açıklama olarak bulunan animasyon tetikleyicilerinin (olaylarının) artık yok sayılmak yerine çalışacağı anlamına gelir.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempIgnoreNoTriggersFlag = a_subMod->IsIgnoringDontConvertAnnotationsToTriggersFlag();
@@ -1216,8 +1216,8 @@ namespace UI
 
 			// Submod triggers from annotations only
 			{
-				std::string triggersFromAnnotationsOnlyLabel = "Only use triggers from annotations##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "triggersFromAnnotationsOnly";
-				std::string triggersFromAnnotationsOnlyTooltip = "If checked, the triggers \"baked in\" in the animation clips inside the behavior files will be ignored. The only events that will will be those from annotations inside the animation file.\nThe \"Don't convert annotations to triggers\" flag is still respected, so make sure to enable the above setting if necessary.";
+				std::string triggersFromAnnotationsOnlyLabel = "Yalnızca açıklamalardaki tetikleyicileri kullan##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "triggersFromAnnotationsOnly";
+				std::string triggersFromAnnotationsOnlyTooltip = "İşaretlenirse, davranış (behavior) dosyalarının içindeki animasyon kliplerinde \"gömülü\" olan tetikleyiciler yok sayılır. Yalnızca animasyon dosyasındaki açıklamalardan (annotations) gelen olaylar çalıştırılır.\n\"Açıklamaları tetikleyicilere dönüştürme\" bayrağına hala uyulur, bu nedenle gerekirse yukarıdaki ayarı da etkinleştirdiğinizden emin olun.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempTriggersFromAnnotationsOnly = a_subMod->IsOnlyUsingTriggersFromAnnotations();
@@ -1240,8 +1240,8 @@ namespace UI
 
 			// Submod interruptible
 			{
-				std::string interruptibleLabel = "Interruptible##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "interruptible";
-				std::string interruptibleTooltip = "If checked, the conditions will be checked every frame and the clip will be switched to another one if needed. Mostly useful for looping animations.";
+				std::string interruptibleLabel = "Kesilebilir (Interruptible)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "interruptible";
+				std::string interruptibleTooltip = "İşaretlenirse, koşullar her karede (frame) tekrar kontrol edilir ve gerekirse klip başka bir kliple değiştirilir. En çok döngüsel (looping) animasyonlar için yararlıdır.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempInterruptible = a_subMod->IsInterruptible();
@@ -1296,15 +1296,15 @@ namespace UI
 			// Submod custom blend time on interrupt
 			if (a_subMod->IsInterruptible()) {
 				const std::string hasCustomBlendTimeLabel = "##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "hasCustomBlendTimeOnInterrupt";
-				const std::string blendTimeLabel = "Custom blend time on interrupt##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnInterrupt";
-				const std::string blendTimeTooltip = "Sets custom blend time between an animation from this submod and a new one on interrupt.";
+				const std::string blendTimeLabel = "Kesilmede özel geçiş süresi (blend time)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnInterrupt";
+				const std::string blendTimeTooltip = "Animasyon kesildiğinde bu alt modun animasyonu ile yeni animasyon arasında özel bir geçiş süresi belirler.";
 				drawBlendTimeOption(CustomBlendType::kInterrupt, hasCustomBlendTimeLabel, blendTimeLabel, blendTimeTooltip);
 			}
 
 			// Submod replace on loop
 			{
-				std::string replaceOnLoopLabel = "Replace on loop##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "replaceOnLoop";
-				std::string replaceOnLoopTooltip = "If checked the conditions will be reevaluated on animation loop and the clip will be switched to another one if needed. Enabled by default.";
+				std::string replaceOnLoopLabel = "Döngüde değiştir (Replace on loop)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "replaceOnLoop";
+				std::string replaceOnLoopTooltip = "İşaretlenirse, animasyon döngüsünde koşullar yeniden değerlendirilir ve gerekirse klip başka bir klifle değiştirilir. Varsayılan olarak etkindir.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempReplaceOnLoop = a_subMod->IsReevaluatingOnLoop();
@@ -1328,15 +1328,15 @@ namespace UI
 			// Submod custom blend time on loop
 			if (a_subMod->IsReevaluatingOnLoop()) {
 				const std::string hasCustomBlendTimeLabel = "##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "hasCustomBlendTimeOnLoop";
-				const std::string blendTimeLabel = "Custom blend time on loop##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnLoop";
-				const std::string blendTimeTooltip = "Sets custom blend time between an animation from this submod and a new one when replacing on loop.";
+				const std::string blendTimeLabel = "Döngüde özel geçiş süresi (blend time)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnLoop";
+				const std::string blendTimeTooltip = "Döngü sırasında değiştirme yapılırken bu alt modun animasyonu ile yeni animasyon arasında özel bir geçiş süresi belirler.";
 				drawBlendTimeOption(CustomBlendType::kLoop, hasCustomBlendTimeLabel, blendTimeLabel, blendTimeTooltip);
 			}
 
 			// Submod replace on echo
 			{
-				std::string replaceOnEchoLabel = "Replace on echo##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "replaceOnEcho";
-				std::string replaceOnEchoTooltip = "If checked the conditions will be reevaluated on animation echo and the clip will be switched to another one if needed. Disabled by default because of cosmetic issues with several animations, should be only enabled on animations that actually need it.";
+				std::string replaceOnEchoLabel = "Yankıda değiştir (Replace on echo)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "replaceOnEcho";
+				std::string replaceOnEchoTooltip = "İşaretlenirse, animasyon yankılanmasında (echo) koşullar yeniden değerlendirilir ve gerekirse klip başka bir klifle değiştirilir. Birkaç animasyondaki görsel sorunlar nedeniyle varsayılan olarak devre dışıdır, yalnızca gerçekten ihtiyaç duyan animasyonlarda etkinleştirilmelidir.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempReplaceOnEcho = a_subMod->IsReevaluatingOnEcho();
@@ -1345,7 +1345,7 @@ namespace UI
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::UpdateSubModJob>(a_subMod, false);
 						a_subMod->SetDirty(true);
 					}
-					ImGui::SameLine();
+ImGui::SameLine();
 					UICommon::HelpMarker(replaceOnEchoTooltip.data());
 				} else if (a_subMod->IsReevaluatingOnEcho()) {
 					ImGui::BeginDisabled();
@@ -1360,15 +1360,15 @@ namespace UI
 			// Submod custom blend time on echo
 			if (a_subMod->IsReevaluatingOnEcho()) {
 				const std::string hasCustomBlendTimeLabel = "##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "hasCustomBlendTimeOnEcho";
-				const std::string blendTimeLabel = "Custom blend time on echo##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnEcho";
-				const std::string blendTimeTooltip = "Sets custom blend time between an animation from this submod and a new one when replacing on echo.";
+				const std::string blendTimeLabel = "Yankıda özel geçiş süresi (blend time)##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "blendTimeOnEcho";
+				const std::string blendTimeTooltip = "Yankıda (echo) değiştirme yapılırken bu alt modun animasyonu ile yeni animasyon arasında özel bir geçiş süresi belirler.";
 				drawBlendTimeOption(CustomBlendType::kEcho, hasCustomBlendTimeLabel, blendTimeLabel, blendTimeTooltip);
 			}
 
 			// Submod run functions on loop
 			{
-				std::string runFunctionsOnLoopLabel = "Run functions on loop##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "runFunctionsOnLoop";
-				std::string runFunctionsOnLoopTooltip = "If checked the OnDeactivate/OnActivate functions will run when the clip loops. Enabled by default.";
+				std::string runFunctionsOnLoopLabel = "Döngüde fonksiyonları çalıştır##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "runFunctionsOnLoop";
+				std::string runFunctionsOnLoopTooltip = "İşaretlenirse, animasyon klip döngüye girdiğinde OnDeactivate/OnActivate fonksiyonları çalıştırılır. Varsayılan olarak etkindir.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempRunFunctionsOnLoop = a_subMod->IsRunningFunctionsOnLoop();
@@ -1391,8 +1391,8 @@ namespace UI
 
 			// Submod run functions on echo
 			{
-				std::string runFunctionsOnEchoLabel = "Run functions on echo##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "runFunctionsOnEcho";
-				std::string runFunctionsOnEchoTooltip = "If checked the OnDeactivate/OnActivate functions will run on clip echo. Enabled by default.";
+				std::string runFunctionsOnEchoLabel = "Yankıda fonksiyonları çalıştır##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "runFunctionsOnEcho";
+				std::string runFunctionsOnEchoTooltip = "İşaretlenirse, animasyon klip yankılanmasında (echo) OnDeactivate/OnActivate fonksiyonları çalıştırılır. Varsayılan olarak etkindir.";
 
 				if (_editMode != EditMode::kNone) {
 					bool tempRunFunctionsOnEcho = a_subMod->IsRunningFunctionsOnEcho();
@@ -1416,10 +1416,10 @@ namespace UI
 			// Submod animations
 			{
 				// list animation files
-				std::string filesTreeNodeLabel = "Animation Files##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "filesNode";
+				std::string filesTreeNodeLabel = "Animasyon Dosyaları##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "filesNode";
 				if (ImGui::CollapsingHeader(filesTreeNodeLabel.data())) {
 					ImGui::AlignTextToFramePadding();
-					UICommon::TextUnformattedWrapped("This section only lists all the animation files found in the submod. The \"Replacement Animations\" section below lists actual loaded replacement animations per behavior project, and allows configuration.");
+					UICommon::TextUnformattedWrapped("Bu bölüm yalnızca alt modda bulunan tüm animasyon dosyalarını listeler. Aşağıdaki \"Değiştirme Animasyonları\" bölümü ise her davranış projesi (behavior project) için yüklü olan gerçek değiştirme animasyonlarını listeler ve yapılandırmaya olanak tanır.");
 
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 
@@ -1457,7 +1457,7 @@ namespace UI
 					ImGui::PopStyleVar();
 				}
 
-				std::string animationsTreeNodeLabel = "Replacement Animations##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "animationsNode";
+				std::string animationsTreeNodeLabel = "Değiştirme Animasyonları##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "animationsNode";
 				if (ImGui::CollapsingHeader(animationsTreeNodeLabel.data())) {
 					UnloadedAnimationsWarning();
 
@@ -1486,7 +1486,7 @@ namespace UI
 									OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::UpdateSubModJob>(a_subMod, false);
 									a_subMod->SetDirty(true);
 								}
-								UICommon::AddTooltip("If unchecked, the replacement animation will be disabled and will not be considered.");
+								UICommon::AddTooltip("İşaret kaldırılırsa, bu değiştirme animasyonu devre dışı bırakılır ve hesaba katılmaz.");
 								ImGui::PopID();
 								ImGui::SameLine();
 							}
@@ -1532,8 +1532,8 @@ namespace UI
 									if (!a_replacementAnimation->IsSynchronizedAnimation()) {
 										// variant mode
 										if (_editMode != EditMode::kNone) {
-											const std::string label = "Variant Mode##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants)) + "variantMode";
-											const std::string current = variantMode == VariantMode::kRandom ? "Random" : "Sequential";
+											const std::string label = "Varyant Modu##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants)) + "variantMode";
+											const std::string current = variantMode == VariantMode::kRandom ? "Rastgele" : "Sıralı";
 											int tempVariantMode = static_cast<int>(variantMode);
 											ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
 											if (ImGui::SliderInt(label.data(), &tempVariantMode, 0, 1, current.data(), ImGuiSliderFlags_NoInput)) {
@@ -1544,9 +1544,9 @@ namespace UI
 												OpenAnimationReplacer::GetSingleton().ClearAllConditionStateData();
 											}
 										} else {
-											UICommon::TextUnformattedDisabled("Variant Mode:");
+											UICommon::TextUnformattedDisabled("Varyant Modu:");
 											ImGui::SameLine();
-											ImGui::TextUnformatted(variantMode == VariantMode::kRandom ? "Random" : "Sequential");
+											ImGui::TextUnformatted(variantMode == VariantMode::kRandom ? "Rastgele" : "Sıralı");
 										}
 									}
 
@@ -1555,29 +1555,29 @@ namespace UI
 										auto getScopeName = [](const Conditions::StateDataScope a_scope) {
 											switch (a_scope) {
 											case Conditions::StateDataScope::kLocal:
-												return "Local"sv;
+												return "Yerel (Local)"sv;
 											case Conditions::StateDataScope::kSubMod:
-												return "Submod"sv;
+												return "Alt Mod (Submod)"sv;
 											case Conditions::StateDataScope::kReplacerMod:
-												return "Replacer mod"sv;
+												return "Değiştirici Mod (Replacer mod)"sv;
 											}
-											return "INVALID"sv;
+											return "GEÇERSİZ"sv;
 										};
 
 										auto getScopeTooltip = [](const Conditions::StateDataScope a_scope) {
 											switch (a_scope) {
 											case Conditions::StateDataScope::kLocal:
-												return "The variant data (random value, played history) is unique per active animation clip."sv;
+												return "Varyant verisi (rastgele değer, oynatılma geçmişi) her aktif animasyon klibi için özeldir."sv;
 											case Conditions::StateDataScope::kSubMod:
-												return "The variant data (random value, optionally played history) is shared between all animation clips in the submod, as long as their variant scope is set to the same value.\n\nThe data will be kept alive until all active clips from narrower scopes are inactive."sv;
+												return "Varyant verisi (rastgele değer, isteğe bağlı oynatılma geçmişi), varyant kapsamı aynı değere ayarlandığı sürece alt moddaki tüm animasyon klipleri arasında paylaşılır.\n\nVeriler, daha dar kapsamlardaki tüm aktif klipler pasifleşene kadar canlı tutulur."sv;
 											case Conditions::StateDataScope::kReplacerMod:
-												return "The variant data (random value, optionally played history) is shared between all animation clips in the entire replacer mod, as long as their variant scope is set to the same value.\n\nThe data will be kept alive until all active clips from narrower scopes are inactive."sv;
+												return "Varyant verisi (rastgele değer, isteğe bağlı oynatılma geçmişi), varyant kapsamı aynı değere ayarlandığı sürece tüm değiştirici moddaki tüm animasyon klipleri arasında paylaşılır.\n\nVeriler, daha dar kapsamlardaki tüm aktif klipler pasifleşene kadar canlı tutulur."sv;
 											}
-											return "INVALID"sv;
+											return "GEÇERSİZ"sv;
 										};
 
 										if (_editMode != EditMode::kNone) {
-											const std::string variantScopeLabel = "Variant state scope##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
+											const std::string variantScopeLabel = "Varyant durum kapsamı##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
 											if (ImGui::BeginCombo(variantScopeLabel.data(), getScopeName(variantScope).data())) {
 												for (Conditions::StateDataScope i = Conditions::StateDataScope::kLocal; i <= Conditions::StateDataScope::kReplacerMod; i = static_cast<Conditions::StateDataScope>(static_cast<int32_t>(i) << 1)) {
 													const bool bIsCurrent = i == variantScope;
@@ -1596,7 +1596,7 @@ namespace UI
 												ImGui::EndCombo();
 											}
 										} else {
-											const auto scopeText = std::format("Variant state scope: {}", getScopeName(variantScope));
+											const auto scopeText = std::format("Varyant durum kapsamı: {}", getScopeName(variantScope));
 											ImGui::TextUnformatted(scopeText.data());
 											UICommon::AddTooltip(getScopeTooltip(variantScope).data());
 										}
@@ -1605,7 +1605,7 @@ namespace UI
 									// blend between variants
 									{
 										bool tempShouldBlend = variants.ShouldBlendBetweenVariants();
-										const std::string shouldBlendLabel = "Blend between variants##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
+										const std::string shouldBlendLabel = "Varyantlar arasında geçiş yap (Blend)##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
 										ImGui::BeginDisabled(_editMode == EditMode::kNone);
 										if (ImGui::Checkbox(shouldBlendLabel.data(), &tempShouldBlend)) {
 											variants.SetShouldBlendBetweenVariants(tempShouldBlend);
@@ -1613,13 +1613,13 @@ namespace UI
 										}
 										ImGui::EndDisabled();
 										ImGui::SameLine();
-										UICommon::HelpMarker("If disabled, variants will not have any blend time between each other on loop and echo.");
+										UICommon::HelpMarker("Devre dışı bırakılırsa, varyantlar döngü ve yankılanma (echo) sırasında birbirleri arasında herhangi bir yumuşak geçiş süresine (blend time) sahip olmaz.");
 									}
 
-									// reset random on loop / echo
+// reset random on loop / echo
 									{
 										bool tempShouldResetRandom = variants.ShouldResetRandomOnLoopOrEcho();
-										const std::string shouldResetRandomLabel = "Reset random on loop or echo##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
+										const std::string shouldResetRandomLabel = "Döngü veya ekoda rastgeleyi sıfırla##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
 										ImGui::BeginDisabled(_editMode == EditMode::kNone);
 										if (ImGui::Checkbox(shouldResetRandomLabel.data(), &tempShouldResetRandom)) {
 											variants.SetShouldResetRandomOnLoopOrEcho(tempShouldResetRandom);
@@ -1627,14 +1627,14 @@ namespace UI
 										}
 										ImGui::EndDisabled();
 										ImGui::SameLine();
-										UICommon::HelpMarker("If enabled, the random number that is used to select a random variant will be reset on every loop or echo.");
+										UICommon::HelpMarker("Etkinleştirilirse, rastgele bir varyant seçmek için kullanılan rastgele sayı her döngüde veya ekoda sıfırlanacaktır.");
 									}
 
 									// share played history
 									{
 										if (variants.GetVariantStateScope() > Conditions::StateDataScope::kLocal) {
 											bool tempShouldSharePlayedHistory = variants.ShouldSharePlayedHistory();
-											const std::string shouldSharePlayedHistoryLabel = "Share played history##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
+											const std::string shouldSharePlayedHistoryLabel = "Oynatılan geçmişi paylaş##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
 											ImGui::BeginDisabled(_editMode == EditMode::kNone);
 											if (ImGui::Checkbox(shouldSharePlayedHistoryLabel.data(), &tempShouldSharePlayedHistory)) {
 												variants.SetShouldSharePlayedHistory(tempShouldSharePlayedHistory);
@@ -1643,7 +1643,7 @@ namespace UI
 											}
 											ImGui::EndDisabled();
 											ImGui::SameLine();
-											UICommon::HelpMarker("If enabled, the played history (for the \"Play once\" setting) will be shared between all variants with the same variant state scope.");
+											UICommon::HelpMarker("Etkinleştirilirse, oynatılan geçmiş (\"Bir kez oynat\" ayarı için) aynı varyant durum kapsamına sahip tüm varyantlar arasında paylaşılacaktır.");
 										}
 									}
 
@@ -1670,12 +1670,12 @@ namespace UI
 												a_subMod->SetDirty(true);
 												OpenAnimationReplacer::GetSingleton().ClearAllConditionStateData();
 											}
-											UICommon::AddTooltip("If unchecked, the replacement animation variant will be disabled and will not be considered.");
+											UICommon::AddTooltip("İşaretlenmezse, yedek animasyon varyantı devre dışı bırakılacak ve dikkate alınmayacaktır.");
 											ImGui::SameLine();
 
 											if (variantMode == VariantMode::kSequential || a_variant.ShouldPlayOnce()) {
 												ImGui::BeginDisabled(index == 0);
-												if (ImGui::ArrowButton("Move variant up", ImGuiDir_Up)) {
+												if (ImGui::ArrowButton("Varyantı yukarı taşı", ImGuiDir_Up)) {
 													variants.SwapVariants(index, index - 1);
 													a_replacementAnimation->UpdateVariantCache();
 													a_subMod->SetDirty(true);
@@ -1685,7 +1685,7 @@ namespace UI
 												ImGui::SameLine();
 
 												ImGui::BeginDisabled(index >= variants.GetVariantCount() - 1);
-												if (ImGui::ArrowButton("Move variant down", ImGuiDir_Down)) {
+												if (ImGui::ArrowButton("Varyantı aşağı taşı", ImGuiDir_Down)) {
 													variants.SwapVariants(index, index + 1);
 													a_replacementAnimation->UpdateVariantCache();
 													a_subMod->SetDirty(true);
@@ -1696,44 +1696,44 @@ namespace UI
 											} else if (variantMode == VariantMode::kRandom) {
 												float tempWeight = a_variant.GetWeight();
 												ImGui::SetNextItemWidth(ImGui::GetFontSize() * 10);
-												if (ImGui::InputFloat("Weight", &tempWeight, .01f, 1.0f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
+												if (ImGui::InputFloat("Ağırlık", &tempWeight, .01f, 1.0f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue)) {
 													tempWeight = std::max(0.f, tempWeight);
 													a_variant.SetWeight(tempWeight);
 													a_replacementAnimation->UpdateVariantCache();
 													a_subMod->SetDirty(true);
 													OpenAnimationReplacer::GetSingleton().ClearAllConditionStateData();
 												}
-												UICommon::AddTooltip("The weight of this variant used for the weighted random selection (e.g. a variant with a weight of 2 will be twice as likely to be picked than a variant with a weight of 1)");
+												UICommon::AddTooltip("Ağırlıklı rastgele seçim için kullanılan bu varyantın ağırlığı (örneğin ağırlığı 2 olan bir varyantın seçilme olasılığı, ağırlığı 1 olan bir varyanta göre iki kat daha fazladır)");
 												ImGui::SameLine();
 											}
 
 											bool tempPlayOnce = a_variant.ShouldPlayOnce();
-											if (ImGui::Checkbox(variantMode == VariantMode::kRandom ? "Play first and once" : "Play once", &tempPlayOnce)) {
+											if (ImGui::Checkbox(variantMode == VariantMode::kRandom ? "Önce ve bir kez oynat" : "Bir kez oynat", &tempPlayOnce)) {
 												a_variant.SetPlayOnce(tempPlayOnce);
 												a_replacementAnimation->UpdateVariantCache();
 												a_subMod->SetDirty(true);
 												OpenAnimationReplacer::GetSingleton().ClearAllConditionStateData();
 											}
-											UICommon::AddTooltip(variantMode == VariantMode::kRandom ? "Variants marked with this will play in sequence before other random variants, and will not repeat, until the animation data resets after a while of inactivity." : "If checked, the variant will only play once until the animation data resets after a while of inactivity.");
+											UICommon::AddTooltip(variantMode == VariantMode::kRandom ? "Bununla işaretlenen varyantlar, diğer rastgele varyantlardan önce sırayla oynatılır ve bir süre hareketsizlikten sonra animasyon verileri sıfırlanana kadar tekrarlanmaz." : "İşaretlenirse, varyant bir süre hareketsizlikten sonra animasyon verileri sıfırlanana kadar yalnızca bir kez oynatılacaktır.");
 											ImGui::SameLine();
 											ImGui::PopID();
 										} else {
 											if (variantMode == VariantMode::kSequential || a_variant.ShouldPlayOnce()) {
 												if (a_variant.ShouldPlayOnce()) {
-													ImGui::TextUnformatted("[Play once]");
-													UICommon::AddTooltip("The variant will only play once until the animation data resets after a while of inactivity.");
+													ImGui::TextUnformatted("[Bir kez oynat]");
+													UICommon::AddTooltip("Varyant, bir süre hareketsizlikten sonra animasyon verileri sıfırlanana kadar yalnızca bir kez oynatılacaktır.");
 													ImGui::SameLine();
 												}
 											} else if (variantMode == VariantMode::kRandom) {
-												UICommon::TextUnformattedDisabled("Weight:");
+												UICommon::TextUnformattedDisabled("Ağırlık:");
 												ImGui::SameLine();
 												ImGui::TextUnformatted(std::format("{}", a_variant.GetWeight()).data());
-												UICommon::AddTooltip("The weight of this variant used for the weighted random selection (e.g. a variant with a weight of 2 will be twice as likely to be picked than a variant with a weight of 1)");
+												UICommon::AddTooltip("Ağırlıklı rastgele seçim için kullanılan bu varyantın ağırlığı (örneğin ağırlığı 2 olan bir varyantın seçilme olasılığı, ağırlığı 1 olan bir varyanta göre iki kat daha fazladır)");
 												ImGui::SameLine();
 											}
 										}
 
-										UICommon::TextUnformattedDisabled("Filename:");
+										UICommon::TextUnformattedDisabled("Dosya adı:");
 										ImGui::SameLine();
 
 										bIsPreviewing = IsPreviewingAnimation(refrToEvaluate, a_replacementAnimation, a_variant.GetIndex());
@@ -1780,7 +1780,7 @@ namespace UI
 			}
 
 			// Submod conditions
-			std::string conditionsTreeNodeLabel = "Conditions##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "conditionsNode";
+			std::string conditionsTreeNodeLabel = "Koşullar##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "conditionsNode";
 			if (ImGui::CollapsingHeader(conditionsTreeNodeLabel.data(), ImGuiTreeNodeFlags_DefaultOpen)) {
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 
@@ -1800,7 +1800,7 @@ namespace UI
 
 			// Submod paired conditions
 			if (a_subMod->HasSynchronizedAnimations()) {
-				std::string pairedConditionsTreeNodeLabel = "Paired Conditions##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "pairedConditionsNode";
+				std::string pairedConditionsTreeNodeLabel = "Eşleşmiş Koşullar##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "pairedConditionsNode";
 				if (ImGui::CollapsingHeader(pairedConditionsTreeNodeLabel.data(), ImGuiTreeNodeFlags_DefaultOpen)) {
 					ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 
@@ -1825,16 +1825,16 @@ namespace UI
 				std::string helpMarkerText;
 				switch (a_functionSetType) {
 				case Functions::FunctionSetType::kOnActivate:
-					functionsTreeNodeLabel = "On Activate##";
-					helpMarkerText = "Functions from this set will run when an animation from this submod starts.";
+					functionsTreeNodeLabel = "Aktifleştiğinde##";
+					helpMarkerText = "Bu gruptaki işlevler, bu alt moddan bir animasyon başladığında çalışacaktır.";
 					break;
 				case Functions::FunctionSetType::kOnDeactivate:
-					functionsTreeNodeLabel = "On Deactivate##";
-					helpMarkerText = "Functions from this set will run when an animation from this submod ends.";
+					functionsTreeNodeLabel = "Devre Dışı Kaldığında##";
+					helpMarkerText = "Bu gruptaki işlevler, bu alt moddan bir animasyon sona erdiğinde çalışacaktır.";
 					break;
 				case Functions::FunctionSetType::kOnTrigger:
-					functionsTreeNodeLabel = "On Trigger##";
-					helpMarkerText = "Functions from this set will run when a specified animation event is called while an animation from this submod is playing.";
+					functionsTreeNodeLabel = "Tetiklendiğinde##";
+					helpMarkerText = "Bu gruptaki işlevler, bu alt moddan bir animasyon oynatılırken belirli bir animasyon olayı çağrıldığında çalışacaktır.";
 					break;
 				}
 
@@ -1865,7 +1865,7 @@ namespace UI
 			ImGuiTreeNodeFlags_ treeNodeFlags = a_subMod->HasAnyFunctionSet() ? ImGuiTreeNodeFlags_DefaultOpen : ImGuiTreeNodeFlags_None;
 
 			if (_editMode != EditMode::kNone || a_subMod->HasAnyFunctionSet()) {
-				std::string allFunctionsTreeNodeLabel = "Functions##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "functionsNode";
+				std::string allFunctionsTreeNodeLabel = "İşlevler##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "functionsNode";
 				if (ImGui::CollapsingHeader(allFunctionsTreeNodeLabel.data(), treeNodeFlags)) {
 					ImGui::Indent();
 					if (_editMode != EditMode::kNone || a_subMod->HasFunctionSet(Functions::FunctionSetType::kOnActivate)) {
@@ -1885,7 +1885,7 @@ namespace UI
 				if (_editMode == EditMode::kAuthor && a_replacerMod->IsLegacy()) {
 					// Save migration config
 					ImGui::BeginDisabled(a_subMod->HasInvalidConditions() || a_subMod->HasInvalidFunctions());
-					UICommon::ButtonWithConfirmationModal("Save author submod config for migration", "This author config won't be read because this is a legacy mod.\nThe functionality is here for convenience only.\nYou can copy the resulting file to the proper folder when migrating your mods to the new structure.\n\n"sv, [&]() {
+					UICommon::ButtonWithConfirmationModal("Taşıma için geliştirici alt mod yapılandırmasını kaydet", "Bu eski bir mod olduğu için bu geliştirici yapılandırması okunmayacaktır.\nİşlevsellik sadece kolaylık sağlamak amacıyla buradadır.\nModlarınızı yeni yapıya taşırken oluşan dosyayı uygun klasöre kopyalayabilirsiniz.\n\n"sv, [&]() {
 						a_subMod->SaveConfig(_editMode, false);
 					});
 					ImGui::EndDisabled();
@@ -1896,7 +1896,7 @@ namespace UI
 						ImGui::BeginDisabled();
 					}
 					ImGui::BeginDisabled(a_subMod->HasInvalidConditions() || a_subMod->HasInvalidFunctions());
-					if (ImGui::Button(_editMode == EditMode::kAuthor ? "Save submod config (Author)" : "Save submod config (User)")) {
+					if (ImGui::Button(_editMode == EditMode::kAuthor ? "Alt mod yapılandırmasını kaydet (Geliştirici)" : "Alt mod yapılandırmasını kaydet (Kullanıcı)")) {
 						a_subMod->SaveConfig(_editMode);
 					}
 					ImGui::EndDisabled();
@@ -1905,9 +1905,9 @@ namespace UI
 					}
 				}
 
-				// Reload submod config
+// Reload submod config
 				ImGui::SameLine();
-				UICommon::ButtonWithConfirmationModal("Reload submod config", "Are you sure you want to reload the config?\nThis operation cannot be undone!\n\n"sv, [&]() {
+				UICommon::ButtonWithConfirmationModal("Alt mod yapılandırmasını yeniden yükle", "Yapılandırmayı yeniden yüklemek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReloadSubModConfigJob>(a_subMod);
 				});
 
@@ -1917,7 +1917,7 @@ namespace UI
 					ImGui::BeginDisabled();
 				}
 				ImGui::SameLine();
-				UICommon::ButtonWithConfirmationModal("Delete submod user config", "Are you sure you want to delete the user config?\nThis operation cannot be undone!\n\n"sv, [&]() {
+				UICommon::ButtonWithConfirmationModal("Alt mod kullanıcı yapılandırmasını sil", "Kullanıcı yapılandırmasını silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 					Utils::DeleteUserConfig(a_subMod->GetPath());
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReloadSubModConfigJob>(a_subMod);
 				});
@@ -1929,7 +1929,7 @@ namespace UI
 				if (a_replacerMod->IsLegacy() && _editMode == EditMode::kAuthor) {
 					ImGui::SameLine();
 					ImGui::BeginDisabled(a_subMod->HasInvalidConditions() || a_subMod->HasInvalidFunctions());
-					if (ImGui::Button("Copy submod config to clipboard")) {
+					if (ImGui::Button("Alt mod yapılandırmasını panoya kopyala")) {
 						ImGui::LogToClipboard();
 						ImGui::LogText(a_subMod->SerializeToString().data());
 						ImGui::LogFinish();
@@ -1948,9 +1948,9 @@ namespace UI
 	{
 		static char animPathFilterBuf[32] = "";
 		ImGui::SetNextItemWidth(ImGui::GetFontSize() * 18);
-		ImGui::InputTextWithHint("Filter", "Animation name...", animPathFilterBuf, IM_ARRAYSIZE(animPathFilterBuf));
+		ImGui::InputTextWithHint("Filtrele", "Animasyon adı...", animPathFilterBuf, IM_ARRAYSIZE(animPathFilterBuf));
 		ImGui::SameLine();
-		UICommon::HelpMarker("Type a part of an animation path to filter the list of replacement animations.");
+		UICommon::HelpMarker("Değiştirilecek animasyonlar listesini filtrelemek için animasyon yolunun bir bölümünü yazın.");
 
 		ImGui::Separator();
 
@@ -2024,7 +2024,7 @@ namespace UI
 			}
 		}
 
-		const std::string nodeName = std::format("Priority: {}##{}", std::to_string(a_replacementAnimation->GetPriority()), reinterpret_cast<uintptr_t>(a_replacementAnimation));
+		const std::string nodeName = std::format("Öncelik: {}##{}", std::to_string(a_replacementAnimation->GetPriority()), reinterpret_cast<uintptr_t>(a_replacementAnimation));
 
 		const bool bAnimationDisabled = a_replacementAnimation->IsDisabled();
 		if (bAnimationDisabled) {
@@ -2038,7 +2038,7 @@ namespace UI
 		if (const auto parentSubMod = a_replacementAnimation->GetParentSubMod()) {
 			if (parentSubMod->IsFromLegacyConfig()) {
 				ImGui::SameLine();
-				UICommon::TextUnformattedDisabled("Legacy");
+				UICommon::TextUnformattedDisabled("Eski");
 			} else if (const auto parentMod = parentSubMod->GetParentMod()) {
 				ImGui::SameLine();
 				UICommon::TextUnformattedDisabled(parentMod->GetName().data());
@@ -2071,7 +2071,7 @@ namespace UI
 
 			// draw variants
 			if (a_replacementAnimation->HasVariants()) {
-				ImGui::TextUnformatted("Variants:");
+				ImGui::TextUnformatted("Varyasyonlar:");
 				ImGui::Indent();
 				a_replacementAnimation->ForEachVariant([&](Variant& a_variant) {
 					const bool bVariantDisabled = a_variant.IsDisabled();
@@ -2080,12 +2080,12 @@ namespace UI
 						ImGui::PushStyleVar(ImGuiStyleVar_Alpha, style.DisabledAlpha);
 					}
 
-					UICommon::TextUnformattedDisabled("Weight:");
+					UICommon::TextUnformattedDisabled("Ağırlık:");
 					ImGui::SameLine();
 					ImGui::TextUnformatted(std::format("{}", a_variant.GetWeight()).data());
-					UICommon::AddTooltip("The weight of this variant used for the weighted random selection (e.g. a variant with a weight of 2 will be twice as likely to be picked than a variant with a weight of 1)");
+					UICommon::AddTooltip("Ağırlıklı rastgele seçim için kullanılan bu varyasyonun ağırlığı (ör. ağırlığı 2 olan bir varyasyonun seçilme olasılığı, ağırlığı 1 olana göre iki kat daha fazladır).");
 					ImGui::SameLine();
-					UICommon::TextUnformattedDisabled("Filename:");
+					UICommon::TextUnformattedDisabled("Dosya adı:");
 
 					bIsPreviewing = IsPreviewingAnimation(refrToEvaluate, a_replacementAnimation, a_variant.GetIndex());
 
@@ -2162,7 +2162,7 @@ namespace UI
 			const bool bIsConditionPreset = a_conditionType == Conditions::ConditionType::kPreset;
 
 			// Add condition button
-			if (ImGui::Button("Add new condition")) {
+			if (ImGui::Button("Yeni koşul ekle")) {
 				if (bIsConditionPreset && _lastAddNewConditionName == "PRESET") {
 					_lastAddNewConditionName.clear();
 				}
@@ -2179,17 +2179,17 @@ namespace UI
 
 			// Condition set functions button
 			ImGui::SameLine(0.f, 20.f);
-			const auto popupId = std::string("Condition set functions##") + std::to_string(reinterpret_cast<uintptr_t>(a_conditionSet));
-			if (UICommon::PopupToggleButton("Condition set...", popupId.data())) {
+			const auto popupId = std::string("Koşul seti Fonksiyonları##") + std::to_string(reinterpret_cast<uintptr_t>(a_conditionSet));
+			if (UICommon::PopupToggleButton("Koşul seti...", popupId.data())) {
 				ImGui::OpenPopup(popupId.data());
 			}
 
 			if (ImGui::BeginPopupContextItem(popupId.data())) {
-				const auto xButtonSize = ImGui::CalcTextSize("Paste condition set").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
+				const auto xButtonSize = ImGui::CalcTextSize("Koşul setini yapıştır").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 
 				// Copy conditions button
 				ImGui::BeginDisabled(a_conditionSet->IsEmpty() || !a_conditionSet->IsValid());
-				if (ImGui::Button("Copy condition set", ImVec2(xButtonSize, 0))) {
+				if (ImGui::Button("Koşul setini kopyala", ImVec2(xButtonSize, 0))) {
 					ImGui::CloseCurrentPopup();
 					_conditionSetCopy = DuplicateConditionSet(a_conditionSet);
 				}
@@ -2198,7 +2198,7 @@ namespace UI
 				// Paste conditions button
 				const bool bPasteEnabled = _conditionSetCopy && !(bIsConditionPreset && ConditionSetContainsPreset(_conditionSetCopy.get()));
 				ImGui::BeginDisabled(!bPasteEnabled);
-				if (ImGui::Button("Paste condition set", ImVec2(xButtonSize, 0))) {
+				if (ImGui::Button("Koşul setini yapıştır", ImVec2(xButtonSize, 0))) {
 					ImGui::CloseCurrentPopup();
 					const auto duplicatedSet = DuplicateConditionSet(_conditionSetCopy.get());
 					a_conditionSet->Append(duplicatedSet.get());
@@ -2216,7 +2216,7 @@ namespace UI
 				// Clear conditions button
 				ImGui::BeginDisabled(a_conditionSet->IsEmpty());
 				UICommon::ButtonWithConfirmationModal(
-					"Clear condition set"sv, "Are you sure you want to clear the condition set?\nThis operation cannot be undone!\n\n"sv, [&]() {
+					"Koşul setini sil"sv, "Belirlenen koşul setini silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 						ImGui::ClosePopupsExceptModals();
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ClearConditionSetJob>(a_conditionSet);
 						bSetDirty = true;
@@ -2264,9 +2264,9 @@ namespace UI
 			drawList->AddLine(vertLineStart, vertLineEnd, ImGui::GetColorU32(UICommon::TREE_LINE_COLOR));
 		}
 
-		if (a_editMode > EditMode::kNone) {
+if (a_editMode > EditMode::kNone) {
 			// Add function button
-			if (ImGui::Button("Add new function")) {
+			if (ImGui::Button("Yeni fonksiyon ekle")) {
 				if (!a_functionSet) {
 					a_functionSet = a_parentSubMod->CreateOrGetFunctionSet(a_functionSetType);
 				}
@@ -2283,17 +2283,17 @@ namespace UI
 
 			// Function set functions button
 			ImGui::SameLine(0.f, 20.f);
-			const auto popupId = std::string("Function set functions##") + std::to_string(reinterpret_cast<uintptr_t>(a_parentSubMod)) + std::to_string(static_cast<uint8_t>(a_functionSetType)) + std::to_string(reinterpret_cast<uintptr_t>(a_functionSet));
-			if (UICommon::PopupToggleButton("Function set...", popupId.data())) {
+			const auto popupId = std::string("Fonksiyon seti fonksiyonları##") + std::to_string(reinterpret_cast<uintptr_t>(a_parentSubMod)) + std::to_string(static_cast<uint8_t>(a_functionSetType)) + std::to_string(reinterpret_cast<uintptr_t>(a_functionSet));
+			if (UICommon::PopupToggleButton("Fonksiyon seti...", popupId.data())) {
 				ImGui::OpenPopup(popupId.data());
 			}
 
 			if (ImGui::BeginPopupContextItem(popupId.data())) {
-				const auto xButtonSize = ImGui::CalcTextSize("Paste function set").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
+				const auto xButtonSize = ImGui::CalcTextSize("Fonksiyon setini yapıştır").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 
 				// Copy functions button
 				ImGui::BeginDisabled(!a_functionSet || a_functionSet->IsEmpty() || !a_functionSet->IsValid());
-				if (ImGui::Button("Copy function set", ImVec2(xButtonSize, 0))) {
+				if (ImGui::Button("Fonksiyon setini kopyala", ImVec2(xButtonSize, 0))) {
 					ImGui::CloseCurrentPopup();
 					_functionSetCopy = DuplicateFunctionSet(a_functionSet);
 				}
@@ -2302,7 +2302,7 @@ namespace UI
 				// Paste functions button
 				const bool bPasteEnabled = _functionSetCopy != nullptr;
 				ImGui::BeginDisabled(!bPasteEnabled);
-				if (ImGui::Button("Paste function set", ImVec2(xButtonSize, 0))) {
+				if (ImGui::Button("Fonksiyon setini yapıştır", ImVec2(xButtonSize, 0))) {
 					ImGui::CloseCurrentPopup();
 					const auto duplicatedSet = DuplicateFunctionSet(_functionSetCopy.get());
 					if (!a_functionSet) {
@@ -2323,7 +2323,7 @@ namespace UI
 				// Clear functions button
 				ImGui::BeginDisabled(!a_functionSet || a_functionSet->IsEmpty());
 				UICommon::ButtonWithConfirmationModal(
-					"Clear function set"sv, "Are you sure you want to clear the function set?\nThis operation cannot be undone!\n\n"sv, [&]() {
+					"Fonksiyon setini sil"sv, "Fonksiyon setini silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 						ImGui::ClosePopupsExceptModals();
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ClearFunctionSetJob>(a_functionSet);
 						bSetDirty = true;
@@ -2406,9 +2406,9 @@ namespace UI
 				if (ImGui::BeginPopupContextItem()) {
 					// copy button
 					auto& style = ImGui::GetStyle();
-					auto xButtonSize = ImGui::CalcTextSize("Paste condition below").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
+					auto xButtonSize = ImGui::CalcTextSize("Koşulu aşağıya yapıştırın").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 					ImGui::BeginDisabled(!a_condition->IsValid());
-					if (ImGui::Button("Copy condition", ImVec2(xButtonSize, 0))) {
+					if (ImGui::Button("Koşulu kopyala", ImVec2(xButtonSize, 0))) {
 						_conditionCopy = DuplicateCondition(a_condition);
 						ImGui::CloseCurrentPopup();
 					}
@@ -2417,7 +2417,7 @@ namespace UI
 					// paste button
 					const bool bPasteEnabled = _conditionCopy && !(a_conditionType == Conditions::ConditionType::kPreset && ConditionContainsPreset(_conditionCopy.get()));
 					ImGui::BeginDisabled(!bPasteEnabled);
-					if (ImGui::Button("Paste condition below", ImVec2(xButtonSize, 0))) {
+					if (ImGui::Button("Koşulu aşağıya yapıştırın", ImVec2(xButtonSize, 0))) {
 						auto duplicate = DuplicateCondition(_conditionCopy);
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::InsertConditionJob>(duplicate, a_conditionSet, a_condition);
 						a_bOutSetDirty = true;
@@ -2437,7 +2437,7 @@ namespace UI
 					if (a_condition->GetConditionAPIVersion() >= Conditions::ConditionAPIVersion::V4) {
 						ImGui::Spacing();
 
-						if (ImGui::Button("Edit comment", ImVec2(xButtonSize, 0))) {
+						if (ImGui::Button("Yorumu düzenle", ImVec2(xButtonSize, 0))) {
 							_commentState.Set(a_condition.get(), a_conditionSet);
 							ImGui::CloseCurrentPopup();
 						}
@@ -2447,7 +2447,7 @@ namespace UI
 
 					// delete button
 					UICommon::ButtonWithConfirmationModal(
-						"Delete condition"sv, "Are you sure you want to remove the condition?\nThis operation cannot be undone!\n\n"sv, [&]() {
+						"Koşulu sil"sv, "Bu koşulu silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 							ImGui::ClosePopupsExceptModals();
 							OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveConditionJob>(a_condition, a_conditionSet);
 							a_bOutSetDirty = true;
@@ -2526,7 +2526,7 @@ namespace UI
 					a_conditionSet->SetDirty(true);
 					a_bOutSetDirty = true;
 				}
-				UICommon::AddTooltip("Toggles the condition on/off");
+				UICommon::AddTooltip("Koşulu açar/kapatır");
 				ImGui::PopID();
 			}
 
@@ -2578,12 +2578,12 @@ namespace UI
 				if (a_editMode > EditMode::kNone) {
 					// negate checkbox
 					bool bNOT = a_condition->IsNegated();
-					if (ImGui::Checkbox("Negate", &bNOT)) {
+					if (ImGui::Checkbox("Tersine Çevir", &bNOT)) {
 						a_condition->SetNegated(bNOT);
 						a_conditionSet->SetDirty(true);
 						a_bOutSetDirty = true;
 					}
-					UICommon::AddTooltip("Negates the condition");
+					UICommon::AddTooltip("Koşulu tersine çevirir");
 
 					// select condition type
 					ImGui::SameLine();
@@ -2607,7 +2607,7 @@ namespace UI
 						currentConditionInfo = &*it;
 					}
 
-					if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditionInfos, currentConditionInfo, ImGuiComboFlags_HeightLarge, &UIMain::DrawInfoTooltip)) {
+if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditionInfos, currentConditionInfo, ImGuiComboFlags_HeightLarge, &UIMain::DrawInfoTooltip)) {
 						if (selectedItem >= 0 && selectedItem < conditionInfos.size() && OpenAnimationReplacer::GetSingleton().HasConditionFactory(conditionInfos[selectedItem].name)) {
 							_lastAddNewConditionName = conditionInfos[selectedItem].name;
 							OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReplaceConditionJob>(a_condition, conditionInfos[selectedItem].name, a_conditionSet);
@@ -2618,7 +2618,7 @@ namespace UI
 					// remove condition button
 					UICommon::SecondColumn(_firstColumnWidthPercent);
 
-					UICommon::ButtonWithConfirmationModal("Delete condition"sv, "Are you sure you want to remove the condition?\nThis operation cannot be undone!\n\n"sv, [&]() {
+					UICommon::ButtonWithConfirmationModal("Koşulu sil"sv, "Koşulu kaldırmak istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveConditionJob>(a_condition, a_conditionSet);
 						a_bOutSetDirty = true;
 					});
@@ -2627,9 +2627,9 @@ namespace UI
 					{
 						if (a_condition->GetConditionType() == Conditions::ConditionType::kCustom && a_condition->GetConditionAPIVersion() >= Conditions::ConditionAPIVersion::V3) {
 							static std::map<Conditions::EssentialState, std::string_view> enumMap = {
-								{ Conditions::EssentialState::kEssential, "Essential" },
-								{ Conditions::EssentialState::kNonEssential_True, "Non-essential - Return true" },
-								{ Conditions::EssentialState::kNonEssential_False, "Non-essential - Return false" }
+								{ Conditions::EssentialState::kEssential, "Zorunlu" },
+								{ Conditions::EssentialState::kNonEssential_True, "Zorunlu Değil - Kabul et" },
+								{ Conditions::EssentialState::kNonEssential_False, "Zorunlu Değil - Reddet" }
 							};
 							ImGui::SameLine();
 							std::string idString = std::format("{}##essential", reinterpret_cast<uintptr_t>(a_condition.get()));
@@ -2640,7 +2640,7 @@ namespace UI
 							if (const auto search = enumMap.find(currentValue); search != enumMap.end()) {
 								currentEnumName = search->second;
 							} else {
-								currentEnumName = std::format("Unknown ({})", static_cast<uint8_t>(currentValue));
+								currentEnumName = std::format("Bilinmeyen ({})", static_cast<uint8_t>(currentValue));
 							}
 
 							if (ImGui::BeginCombo(idString.data(), currentEnumName.data())) {
@@ -2661,7 +2661,7 @@ namespace UI
 								ImGui::EndCombo();
 							}
 							ImGui::PopID();
-							UICommon::AddTooltip("Users missing a plugin implementing this condition won't be notified about an error and the condition will evaluate to either true or false, depending on the selected option.");
+							UICommon::AddTooltip("Bu koşulu uygulayan bir eklentiye sahip olmayan kullanıcılara hata bildirimi yapılmayacak ve koşul, seçilen seçeneğe bağlı olarak doğru veya yanlış olarak değerlendirilecektir.");
 						}
 					}
 				}
@@ -2714,7 +2714,7 @@ namespace UI
 				const auto current = a_condition->GetCurrent(a_refrToEvaluate);
 				if (!current.empty()) {
 					ImGui::Separator();
-					UICommon::TextUnformattedDisabled("Current:");
+					UICommon::TextUnformattedDisabled("Mevcut:");
 					ImGui::SameLine();
 					ImGui::TextUnformatted(current.data());
 				}
@@ -2809,9 +2809,9 @@ namespace UI
 				if (ImGui::BeginPopupContextItem()) {
 					// copy button
 					auto& style = ImGui::GetStyle();
-					auto xButtonSize = ImGui::CalcTextSize("Paste function below").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
+					auto xButtonSize = ImGui::CalcTextSize("Fonksiyonu aşağıya yapıştırın").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 					ImGui::BeginDisabled(!a_function->IsValid());
-					if (ImGui::Button("Copy function", ImVec2(xButtonSize, 0))) {
+					if (ImGui::Button("Fonksiyonu kopyala", ImVec2(xButtonSize, 0))) {
 						_functionCopy = DuplicateFunction(a_function);
 						ImGui::CloseCurrentPopup();
 					}
@@ -2820,7 +2820,7 @@ namespace UI
 					// paste button
 					const bool bPasteEnabled = _functionCopy != nullptr;
 					ImGui::BeginDisabled(!bPasteEnabled);
-					if (ImGui::Button("Paste function below", ImVec2(xButtonSize, 0))) {
+					if (ImGui::Button("Fonksiyonu aşağıya yapıştırın", ImVec2(xButtonSize, 0))) {
 						auto duplicate = DuplicateFunction(_functionCopy);
 						if (!a_functionSet) {
 							a_functionSet = a_parentSubMod->CreateOrGetFunctionSet(a_functionSetType);
@@ -2844,7 +2844,7 @@ namespace UI
 					if (a_function->GetFunctionAPIVersion() >= Functions::FunctionAPIVersion::V2) {
 						ImGui::Spacing();
 
-						if (ImGui::Button("Edit comment", ImVec2(xButtonSize, 0))) {
+						if (ImGui::Button("Yorumu düzenle", ImVec2(xButtonSize, 0))) {
 							_commentState.Set(a_function.get(), a_functionSet);
 							ImGui::CloseCurrentPopup();
 						}
@@ -2854,7 +2854,7 @@ namespace UI
 
 					// delete button
 					UICommon::ButtonWithConfirmationModal(
-						"Delete function"sv, "Are you sure you want to remove the function?\nThis operation cannot be undone!\n\n"sv, [&]() {
+						"Fonksiyonu sil"sv, "Fonksiyonu silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 							ImGui::ClosePopupsExceptModals();
 							OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveFunctionJob>(a_function, a_functionSet);
 							a_bOutSetDirty = true;
@@ -2922,7 +2922,7 @@ namespace UI
 				}
 			}
 
-			// Disable checkbox
+// Disable checkbox
 			ImGui::SameLine();
 			if (a_editMode > EditMode::kNone) {
 				std::string idString = std::format("{}##bDisabled", reinterpret_cast<uintptr_t>(a_function.get()));
@@ -2933,7 +2933,7 @@ namespace UI
 					a_functionSet->SetDirty(true);
 					a_bOutSetDirty = true;
 				}
-				UICommon::AddTooltip("Toggles the function on/off");
+				UICommon::AddTooltip("Fonksiyonu açar/kapatır.");
 				ImGui::PopID();
 			}
 
@@ -3009,7 +3009,7 @@ namespace UI
 					// remove function button
 					UICommon::SecondColumn(_firstColumnWidthPercent);
 
-					UICommon::ButtonWithConfirmationModal("Delete function"sv, "Are you sure you want to remove the function?\nThis operation cannot be undone!\n\n"sv, [&]() {
+					UICommon::ButtonWithConfirmationModal("Fonksiyonu sil"sv, "Bu fonksiyonu silmek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveFunctionJob>(a_function, a_functionSet);
 						a_bOutSetDirty = true;
 					});
@@ -3018,9 +3018,9 @@ namespace UI
 					{
 						if (a_function->GetFunctionType() == Functions::FunctionType::kCustom) {
 							static std::map<Functions::EssentialState, std::string_view> enumMap = {
-								{ Functions::EssentialState::kEssential, "Essential" },
-								{ Functions::EssentialState::kNonEssential_True, "Non-essential - Return true" },
-								{ Functions::EssentialState::kNonEssential_False, "Non-essential - Return false" }
+								{ Functions::EssentialState::kEssential, "Zorunlu" },
+								{ Functions::EssentialState::kNonEssential_True, "Zorunlu Değil - Kabul Et" },
+								{ Functions::EssentialState::kNonEssential_False, "Zorunlu Değil - Reddet" }
 							};
 							ImGui::SameLine();
 							std::string idString = std::format("{}##essential", reinterpret_cast<uintptr_t>(a_function.get()));
@@ -3031,7 +3031,7 @@ namespace UI
 							if (const auto search = enumMap.find(currentValue); search != enumMap.end()) {
 								currentEnumName = search->second;
 							} else {
-								currentEnumName = std::format("Unknown ({})", static_cast<uint8_t>(currentValue));
+								currentEnumName = std::format("Bilinmeyen ({})", static_cast<uint8_t>(currentValue));
 							}
 
 							if (ImGui::BeginCombo(idString.data(), currentEnumName.data())) {
@@ -3052,7 +3052,7 @@ namespace UI
 								ImGui::EndCombo();
 							}
 							ImGui::PopID();
-							UICommon::AddTooltip("Users missing a plugin implementing this function won't be notified about an error and the function's return value will either be true or false, depending on the selected option.");
+							UICommon::AddTooltip("Bu fonksiyonu uygulayan bir eklentiye sahip olmayan kullanıcılara hata bildirimi yapılmayacak ve fonksiyonun dönüş değeri seçilen seçeneğe bağlı olarak doğru veya yanlış olacaktır.");
 						}
 					}
 				}
@@ -3113,10 +3113,10 @@ namespace UI
 
 				// triggers
 				if (a_functionSetType == Functions::FunctionSetType::kOnTrigger) {
-					std::string triggersLabel = std::format("Triggers##{}", reinterpret_cast<uintptr_t>(a_function.get()));
+					std::string triggersLabel = std::format("Tetikleyiciler##{}", reinterpret_cast<uintptr_t>(a_function.get()));
 					bool bIsOpen = ImGui::CollapsingHeader(triggersLabel.data(), ImGuiTreeNodeFlags_DefaultOpen);
 					ImGui::SameLine();
-					UICommon::HelpMarker("Animation events with an optional payload that will trigger this function.");
+					UICommon::HelpMarker("İsteğe bağlı veri içeren animasyon olayları bu fonksiyonu tetikleyecektir.");
 					if (bIsOpen) {
 						ImGui::Indent();
 						uint32_t i = 0;
@@ -3134,7 +3134,7 @@ namespace UI
 
 							// remove trigger button
 							UICommon::SecondColumn(_firstColumnWidthPercent);
-							std::string buttonLabel = std::format("Delete trigger##{}{}", reinterpret_cast<uintptr_t>(a_function.get()), i++);
+							std::string buttonLabel = std::format("Tetikleyiciyi sil##{}{}", reinterpret_cast<uintptr_t>(a_function.get()), i++);
 							if (ImGui::Button(buttonLabel.data())) {
 								OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveTriggerJob>(a_function, a_functionSet, a_trigger);
 								a_functionSet->SetDirty(true);
@@ -3145,8 +3145,8 @@ namespace UI
 
 						// add new trigger
 						if (a_editMode > EditMode::kNone) {
-							constexpr auto popupName = "Adding new trigger"sv;
-							std::string buttonLabel = std::format("Add new trigger##{}", reinterpret_cast<uintptr_t>(a_function.get()));
+							constexpr auto popupName = "Yeni tetikleyici ekle"sv;
+							std::string buttonLabel = std::format("Yeni tetikleyici ekle##{}", reinterpret_cast<uintptr_t>(a_function.get()));
 							if (ImGui::Button(buttonLabel.data())) {
 								const auto popupPos = ImGui::GetCursorScreenPos();
 								ImGui::SetNextWindowPos(popupPos);
@@ -3156,12 +3156,12 @@ namespace UI
 							if (ImGui::BeginPopupModal(popupName.data(), nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 								static std::string eventBuffer;
 								static std::string payloadBuffer;
-								ImGui::InputTextWithHint("##NewTriggerEvent", "Event name", &eventBuffer, ImGuiInputTextFlags_CharsNoBlank);
+								ImGui::InputTextWithHint("##NewTriggerEvent", "Olay adı", &eventBuffer, ImGuiInputTextFlags_CharsNoBlank);
 								ImGui::SameLine();
 								ImGui::TextUnformatted(".");
 								ImGui::SameLine();
-								ImGui::InputTextWithHint("##NewTriggerPayload", "Payload (optional)", &payloadBuffer, ImGuiInputTextFlags_CharsNoBlank);
-								std::string addButtonLabel = std::format("Add trigger##{}", reinterpret_cast<uintptr_t>(a_function.get()));
+								ImGui::InputTextWithHint("##NewTriggerPayload", "Payload (isteğe bağlı)", &payloadBuffer, ImGuiInputTextFlags_CharsNoBlank);
+								std::string addButtonLabel = std::format("Tetikleyici ekle##{}", reinterpret_cast<uintptr_t>(a_function.get()));
 								ImGui::BeginDisabled(eventBuffer.empty());
 								if (ImGui::Button(addButtonLabel.data())) {
 									auto trigger = Functions::Trigger(eventBuffer.data(), payloadBuffer.data());
@@ -3175,7 +3175,7 @@ namespace UI
 								ImGui::EndDisabled();
 								ImGui::SetItemDefaultFocus();
 								ImGui::SameLine();
-								if (ImGui::Button("Cancel")) {
+								if (ImGui::Button("İptal")) {
 									eventBuffer.clear();
 									payloadBuffer.clear();
 									ImGui::CloseCurrentPopup();
@@ -3237,7 +3237,7 @@ namespace UI
 		return functionRect;
 	}
 
-	ImRect UIMain::DrawBlankCondition(Conditions::ConditionSet* a_conditionSet, EditMode a_editMode, Conditions::ConditionType a_conditionType)
+ImRect UIMain::DrawBlankCondition(Conditions::ConditionSet* a_conditionSet, EditMode a_editMode, Conditions::ConditionType a_conditionType)
 	{
 		ImRect conditionRect;
 
@@ -3249,7 +3249,7 @@ namespace UI
 
 			const float tooltipWidth = ImGui::GetContentRegionAvail().x + ImGui::GetStyle().WindowPadding.x * 2;
 
-			const std::string nodeId = std::format("No conditions##{}", reinterpret_cast<uintptr_t>(a_conditionSet));
+			const std::string nodeId = std::format("Koşul yok##{}", reinterpret_cast<uintptr_t>(a_conditionSet));
 			UICommon::TreeNodeCollapsedLeaf(nodeId.data(), ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanAvailWidth);
 
 			if (a_editMode > EditMode::kNone) {
@@ -3258,7 +3258,7 @@ namespace UI
 					// paste button
 					const bool bPasteEnabled = _conditionCopy && !(a_conditionType == Conditions::ConditionType::kPreset && ConditionContainsPreset(_conditionCopy.get()));
 					ImGui::BeginDisabled(!bPasteEnabled);
-					if (ImGui::Button("Paste condition below")) {
+					if (ImGui::Button("Koşulu alta yapıştır")) {
 						auto duplicate = DuplicateCondition(_conditionCopy);
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::InsertConditionJob>(duplicate, a_conditionSet, nullptr);
 						ImGui::CloseCurrentPopup();
@@ -3308,7 +3308,7 @@ namespace UI
 
 			const float tooltipWidth = ImGui::GetContentRegionAvail().x + ImGui::GetStyle().WindowPadding.x * 2;
 
-			const std::string nodeId = std::format("No functions##{}", id);
+			const std::string nodeId = std::format("Fonksiyon yok##{}", id);
 			UICommon::TreeNodeCollapsedLeaf(nodeId.data(), ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_SpanAvailWidth);
 
 			if (a_editMode > EditMode::kNone) {
@@ -3317,7 +3317,7 @@ namespace UI
 					// paste button
 					const bool bPasteEnabled = _functionCopy != nullptr;
 					ImGui::BeginDisabled(!bPasteEnabled);
-					if (ImGui::Button("Paste function below")) {
+					if (ImGui::Button("Fonksiyonu alta yapıştır")) {
 						auto duplicate = DuplicateFunction(_functionCopy);
 						if (!a_functionSet) {
 							a_functionSet = a_parentSubMod->CreateOrGetFunctionSet(a_functionSetType);
@@ -3389,11 +3389,11 @@ namespace UI
 			if (_editMode != EditMode::kNone) {
 				if (ImGui::BeginPopupContextItem()) {
 					// delete button
-					const std::string buttonText = "Delete condition preset";
+					const std::string buttonText = "Koşul ön ayarını sil";
 					const auto& style = ImGui::GetStyle();
 					const auto xButtonSize = ImGui::CalcTextSize(buttonText.data()).x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 					UICommon::ButtonWithConfirmationModal(
-						buttonText, "Are you sure you want to remove this condition preset?\nThis operation cannot be undone!\n\n"sv, [&]() {
+						buttonText, "Bu koşul ön ayarını kaldırmak istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 							ImGui::ClosePopupsExceptModals();
 							OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveConditionPresetJob>(a_replacerMod, a_conditionPreset->GetName());
 							setDirtyOnContainingSubMods(a_conditionPreset);
@@ -3436,7 +3436,7 @@ namespace UI
 
 					UICommon::SecondColumn(_firstColumnWidthPercent);
 
-					UICommon::ButtonWithConfirmationModal("Delete condition preset"sv, "Are you sure you want to remove this condition preset?\nThis operation cannot be undone!\n\n"sv, [&]() {
+					UICommon::ButtonWithConfirmationModal("Koşul ön ayarını sil"sv, "Koşul ön ayarını sil"sv, "Bu koşul ön ayarını kaldırmak istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::RemoveConditionPresetJob>(a_replacerMod, a_conditionPreset->GetName());
 						setDirtyOnContainingSubMods(a_conditionPreset);
 						bSetDirty = true;
@@ -3455,7 +3455,7 @@ namespace UI
 						a_replacerMod->SetDirty(true);
 					}
 					UICommon::SecondColumn(_firstColumnWidthPercent);
-					UICommon::TextUnformattedDisabled("Condition preset description");
+					UICommon::TextUnformattedDisabled("Koşul ön ayar açıklaması");
 					ImGui::Spacing();
 				} else if (!a_conditionPreset->GetDescription().empty()) {
 					UICommon::TextUnformattedWrapped(a_conditionPreset->GetDescription().data());
@@ -3489,14 +3489,14 @@ namespace UI
 				ImGui::PushTextWrapPos(ImGui::GetFontSize() * 50.0f);
 				ImGui::TextUnformatted(a_info.description.data());
 				if (!a_info.requiredPluginName.empty()) {
-					ImGui::TextUnformatted("Source plugin:");
+					ImGui::TextUnformatted("Gerekli eklenti:");
 					ImGui::SameLine();
 					UICommon::TextUnformattedColored(a_info.textColor, a_info.requiredPluginName.data());
 					ImGui::SameLine();
 					UICommon::TextUnformattedDisabled(a_info.requiredVersion.string("."sv).data());
 					if (!a_info.requiredPluginAuthor.empty()) {
 						ImGui::SameLine();
-						ImGui::TextUnformatted("by");
+						ImGui::TextUnformatted("yazan:");
 						ImGui::SameLine();
 						UICommon::TextUnformattedColored(a_info.textColor, a_info.requiredPluginAuthor.data());
 					}
@@ -3511,9 +3511,9 @@ namespace UI
 	void UIMain::UnloadedAnimationsWarning()
 	{
 		ImGui::AlignTextToFramePadding();
-		ImGui::TextUnformatted("Animations from behavior projects that are not loaded will not show up here!");
+		ImGui::TextUnformatted("Yüklenmemiş davranış projelerine ait animasyonlar burada görünmeyecektir!");
 		ImGui::SameLine();
-		UICommon::HelpMarker("If the ones you're looking for are missing, make sure a character using them has been loaded by the game in this gameplay session.");
+		UICommon::HelpMarker("Aradığınız öğeler eksikse, bu oyun oturumunda bu öğeleri kullanan bir karakterin oyuna yüklendiğinden emin olun.");
 	}
 
 	bool UIMain::CanPreviewAnimation(RE::TESObjectREFR* a_refr, const ReplacementAnimation* a_replacementAnimation)
@@ -3567,17 +3567,17 @@ namespace UI
 		const auto& style = ImGui::GetStyle();
 
 		if (a_bIsPreviewing) {
-			return ImGui::CalcTextSize("Stop").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
+			return ImGui::CalcTextSize("Durdur").x + style.FramePadding.x * 2 + style.ItemSpacing.x;
 		}
 
 		if (a_replacementAnimation->IsSynchronizedAnimation()) {
-			return (ImGui::CalcTextSize("Preview source").x + style.FramePadding.x * 2 + style.ItemSpacing.x) + (ImGui::CalcTextSize("Preview target").x + style.FramePadding.x * 2 + style.ItemSpacing.x);
+			return (ImGui::CalcTextSize("Önizleme kaynağı").x + style.FramePadding.x * 2 + style.ItemSpacing.x) + (ImGui::CalcTextSize("Önizleme hedefi").x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 		}
 
-		return (ImGui::CalcTextSize("Preview").x + style.FramePadding.x * 2 + style.ItemSpacing.x);
+		return (ImGui::CalcTextSize("Önizleme").x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 	}
 
-	void UIMain::DrawPreviewButtons(RE::TESObjectREFR* a_refr, const ReplacementAnimation* a_replacementAnimation, float a_previewButtonWidth, bool a_bCanPreview, bool a_bIsPreviewing, Variant* a_variant)
+void UIMain::DrawPreviewButtons(RE::TESObjectREFR* a_refr, const ReplacementAnimation* a_replacementAnimation, float a_previewButtonWidth, bool a_bCanPreview, bool a_bIsPreviewing, Variant* a_variant)
 	{
 		const float offset = a_variant ? -10.f : 0.f;
 
@@ -3585,24 +3585,24 @@ namespace UI
 
 		if (a_bIsPreviewing) {
 			ImGui::SameLine(ImGui::GetContentRegionMax().x - a_previewButtonWidth + offset);
-			const std::string label = std::format("Stop##{}", reinterpret_cast<uintptr_t>(obj));
+			const std::string label = std::format("Durdur##{}", reinterpret_cast<uintptr_t>(obj));
 			if (ImGui::Button(label.data())) {
 				OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::StopPreviewAnimationJob>(a_refr);
 			}
 		} else if (a_bCanPreview) {
 			ImGui::SameLine(ImGui::GetContentRegionMax().x - a_previewButtonWidth + offset);
 			if (a_replacementAnimation->IsSynchronizedAnimation()) {
-				const std::string sourceLabel = std::format("Preview source##{}", reinterpret_cast<uintptr_t>(obj));
+				const std::string sourceLabel = std::format("Önizleme kaynağı##{}", reinterpret_cast<uintptr_t>(obj));
 				if (ImGui::Button(sourceLabel.data())) {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::BeginPreviewAnimationJob>(a_refr, a_replacementAnimation, Settings::synchronizedClipSourcePrefix, a_variant);
 				}
 				ImGui::SameLine();
-				const std::string targetLabel = std::format("Preview target##{}", reinterpret_cast<uintptr_t>(obj));
+				const std::string targetLabel = std::format("Önizleme hedefi##{}", reinterpret_cast<uintptr_t>(obj));
 				if (ImGui::Button(targetLabel.data())) {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::BeginPreviewAnimationJob>(a_refr, a_replacementAnimation, Settings::synchronizedClipTargetPrefix, a_variant);
 				}
 			} else {
-				const std::string label = std::format("Preview##{}", reinterpret_cast<uintptr_t>(obj));
+				const std::string label = std::format("Önizleme##{}", reinterpret_cast<uintptr_t>(obj));
 				if (ImGui::Button(label.data())) {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::BeginPreviewAnimationJob>(a_refr, a_replacementAnimation, a_variant);
 				}
@@ -3664,7 +3664,7 @@ namespace UI
 
 				// Magic fallback to handle items with no assigned ID, e.g. Text(), Image()
 				// We build a throwaway ID based on current ID stack + relative AABB of items in window.
-				// THE IDENTIFIER WON'T SURVIVE ANY REPOSITIONING/RESIZINGG OF THE WIDGET, so if your widget moves your dragging operation will be canceled.
+				// THE IDENTIFIER WON'T SURVIVE ANY REPOSITIONING/RESIZING OF THE WIDGET, so if your widget moves your dragging operation will be canceled.
 				// We don't need to maintain/call ClearActiveID() as releasing the button will early out this function and trigger !ActiveIdIsAlive.
 				// Rely on keeping other window->LastItemXXX fields intact.
 				source_id = g.LastItemData.ID = window->GetIDFromRectangle(g.LastItemData.Rect);
