@@ -382,7 +382,7 @@ namespace UI
 			UICommon::HelpMarker("Arayüz ölçeğini ayarlar.");
 			ImGui::SameLine();
 			ImGui::BeginDisabled(tempScale == Settings::fUIScale);
-if (ImGui::Button("Uygula##UIScale")) {
+			if (ImGui::Button("Uygula##UIScale")) {
 				Settings::fUIScale = tempScale;
 				Settings::WriteSettings();
 			}
@@ -730,7 +730,7 @@ if (ImGui::Button("Uygula##UIScale")) {
 		}
 	}
 
-void UIMain::DrawSubModsWithInvalidConditions() const
+	void UIMain::DrawSubModsWithInvalidConditions() const
 	{
 		if (ImGui::BeginTable("SubModsWithInvalidConditions", 2, ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_BordersOuter)) {
 			ImGui::TableSetupColumn("Ana mod", ImGuiTableColumnFlags_WidthStretch);
@@ -1090,7 +1090,7 @@ void UIMain::DrawSubModsWithInvalidConditions() const
 				}
 			}
 
-// Submod description
+			// Submod description
 			{
 				std::string subModDescriptionId = "Submod description##" + std::to_string(reinterpret_cast<std::uintptr_t>(a_replacerMod)) + std::to_string(reinterpret_cast<std::uintptr_t>(a_subMod)) + "description";
 				if (_editMode == EditMode::kAuthor) {
@@ -1345,7 +1345,7 @@ void UIMain::DrawSubModsWithInvalidConditions() const
 						OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::UpdateSubModJob>(a_subMod, false);
 						a_subMod->SetDirty(true);
 					}
-ImGui::SameLine();
+					ImGui::SameLine();
 					UICommon::HelpMarker(replaceOnEchoTooltip.data());
 				} else if (a_subMod->IsReevaluatingOnEcho()) {
 					ImGui::BeginDisabled();
@@ -1616,7 +1616,7 @@ ImGui::SameLine();
 										UICommon::HelpMarker("Devre dışı bırakılırsa, varyantlar döngü ve yankılanma (echo) sırasında birbirleri arasında herhangi bir yumuşak geçiş süresine (blend time) sahip olmaz.");
 									}
 
-// reset random on loop / echo
+									// reset random on loop / echo
 									{
 										bool tempShouldResetRandom = variants.ShouldResetRandomOnLoopOrEcho();
 										const std::string shouldResetRandomLabel = "Döngü veya ekoda rastgeleyi sıfırla##" + std::to_string(reinterpret_cast<std::uintptr_t>(&variants));
@@ -1905,7 +1905,7 @@ ImGui::SameLine();
 					}
 				}
 
-// Reload submod config
+				// Reload submod config
 				ImGui::SameLine();
 				UICommon::ButtonWithConfirmationModal("Alt mod yapılandırmasını yeniden yükle", "Yapılandırmayı yeniden yüklemek istediğinizden emin misiniz?\nBu işlem geri alınamaz!\n\n"sv, [&]() {
 					OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReloadSubModConfigJob>(a_subMod);
@@ -2264,7 +2264,7 @@ ImGui::SameLine();
 			drawList->AddLine(vertLineStart, vertLineEnd, ImGui::GetColorU32(UICommon::TREE_LINE_COLOR));
 		}
 
-if (a_editMode > EditMode::kNone) {
+		if (a_editMode > EditMode::kNone) {
 			// Add function button
 			if (ImGui::Button("Yeni fonksiyon ekle")) {
 				if (!a_functionSet) {
@@ -2607,7 +2607,7 @@ if (a_editMode > EditMode::kNone) {
 						currentConditionInfo = &*it;
 					}
 
-if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditionInfos, currentConditionInfo, ImGuiComboFlags_HeightLarge, &UIMain::DrawInfoTooltip)) {
+					if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditionInfos, currentConditionInfo, ImGuiComboFlags_HeightLarge, &UIMain::DrawInfoTooltip)) {
 						if (selectedItem >= 0 && selectedItem < conditionInfos.size() && OpenAnimationReplacer::GetSingleton().HasConditionFactory(conditionInfos[selectedItem].name)) {
 							_lastAddNewConditionName = conditionInfos[selectedItem].name;
 							OpenAnimationReplacer::GetSingleton().QueueJob<Jobs::ReplaceConditionJob>(a_condition, conditionInfos[selectedItem].name, a_conditionSet);
@@ -2922,7 +2922,7 @@ if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditio
 				}
 			}
 
-// Disable checkbox
+			// Disable checkbox
 			ImGui::SameLine();
 			if (a_editMode > EditMode::kNone) {
 				std::string idString = std::format("{}##bDisabled", reinterpret_cast<uintptr_t>(a_function.get()));
@@ -3237,7 +3237,7 @@ if (_conditionComboFilter.ComboFilter("##Condition type", selectedItem, conditio
 		return functionRect;
 	}
 
-ImRect UIMain::DrawBlankCondition(Conditions::ConditionSet* a_conditionSet, EditMode a_editMode, Conditions::ConditionType a_conditionType)
+	ImRect UIMain::DrawBlankCondition(Conditions::ConditionSet* a_conditionSet, EditMode a_editMode, Conditions::ConditionType a_conditionType)
 	{
 		ImRect conditionRect;
 
@@ -3577,7 +3577,7 @@ ImRect UIMain::DrawBlankCondition(Conditions::ConditionSet* a_conditionSet, Edit
 		return (ImGui::CalcTextSize("Önizleme").x + style.FramePadding.x * 2 + style.ItemSpacing.x);
 	}
 
-void UIMain::DrawPreviewButtons(RE::TESObjectREFR* a_refr, const ReplacementAnimation* a_replacementAnimation, float a_previewButtonWidth, bool a_bCanPreview, bool a_bIsPreviewing, Variant* a_variant)
+	void UIMain::DrawPreviewButtons(RE::TESObjectREFR* a_refr, const ReplacementAnimation* a_replacementAnimation, float a_previewButtonWidth, bool a_bCanPreview, bool a_bIsPreviewing, Variant* a_variant)
 	{
 		const float offset = a_variant ? -10.f : 0.f;
 
