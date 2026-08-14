@@ -198,7 +198,7 @@ namespace UI
 							bool bShouldDrawSeparator = false;
 							if (problems.IsOutdated()) {
 								ImGui::PushStyleColor(ImGuiCol_Text, UICommon::ERROR_TEXT_COLOR);
-								ImGui::TextWrapped("HATA: En az bir değiştirici mod, Open Animation Replacer'ın daha yeni bir sürümünü gerektiren koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen Open Animation Replacer'ı güncelleyin!");
+								ImGui::TextWrapped("HATA: En az bir değiştirici mod, Open Animation Replacerın daha yeni bir sürümünü gerektiren koşullara sahip.\nMod düzgün çalışmayacaktır. Lütfen Open Animation Replacer'ı güncelleyin!");
 								ImGui::PopStyleColor();
 
 								bShouldDrawSeparator = true;
